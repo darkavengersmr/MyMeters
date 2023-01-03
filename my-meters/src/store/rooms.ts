@@ -8,6 +8,21 @@ class Rooms implements IRoomsClass {
     constructor() {
         makeAutoObservable(this)
     }
+
+    get() {
+        return this.data.filter(room => room.isActive)
+    }
+
+    add(room: IRoom) {
+        this.data.push({...room, id: this.data.length.toString()})        
+    }
+
+    remove(id: string): boolean {
+        this.data = this.data.map(room => room.id === id ? {...room, isActive: false} : room)
+        return true
+    }
+
+    
 }
 
 export default new Rooms()

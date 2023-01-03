@@ -12,12 +12,12 @@ export const initialRooms: IRoom[] = [
                 isActive: true,
                 values: [
                     {
-                        date: new Date(2022, 9, 10, 0, 0, 0, 0),
+                        date: "2022-09-10",
                         value: 102,
                         userId: 'user1'
                     },
                     {
-                        date: new Date(2022, 10, 10, 0, 0, 0, 0),
+                        date: "2022-10-10",
                         value: 108,
                         userId: 'user1'
                     },
@@ -29,12 +29,12 @@ export const initialRooms: IRoom[] = [
                 isActive: true,
                 values: [
                     {
-                        date: new Date(2022, 9, 10, 0, 0, 0, 0),
+                        date: "2022-09-10",
                         value: 52,
                         userId: 'user1'
                     },
                     {
-                        date: new Date(2022, 10, 10, 0, 0, 0, 0),
+                        date: "2022-10-10",
                         value: 54,
                         userId: 'user1'
                     },
@@ -53,12 +53,12 @@ export const initialRooms: IRoom[] = [
                 isActive: true,
                 values: [
                     {
-                        date: new Date(2022, 9, 10, 0, 0, 0, 0),
+                        date: "2022-09-10",
                         value: 45443,
                         userId: 'user2'
                     },
                     {
-                        date: new Date(2022, 10, 10, 0, 0, 0, 0),
+                        date: "2022-10-10",
                         value: 45591,
                         userId: 'user2'
                     },

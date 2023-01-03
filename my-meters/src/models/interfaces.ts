@@ -1,12 +1,14 @@
+import { Theme } from "@mui/material";
+
 export interface IUser {
-    id: string
+    id?: string
     username: string
     token?: string
     isAuth?: boolean
     isAdmin?: boolean
     isActive: boolean
     roomId?: string
-    dateIn: Date    
+    dateIn: string    
 }
 
 export interface IUserClass {
@@ -18,20 +20,20 @@ export interface IPersonsClass {
 }
 
 export interface IMeterValue {
-    date: Date
+    date: string
     value: number
     userId: string
 }
 
 export interface IMeter {
-    id: string
+    id?: string
     title: string
     isActive: boolean
     values?: IMeterValue[]    
 }
 
 export interface IRoom {
-    id: string
+    id?: string
     title: string
     isActive: boolean
     meters?: IMeter[]
@@ -39,4 +41,12 @@ export interface IRoom {
 
 export interface IRoomsClass {
     data: IRoom[]
+    get: () => IRoom[]
+    add: (room: IRoom) => void
+    remove: (id: string) => boolean    
+}
+
+export interface ISettingsClass {
+    theme: string
+    getTheme: () => Theme
 }

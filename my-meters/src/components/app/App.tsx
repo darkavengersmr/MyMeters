@@ -1,15 +1,24 @@
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import user from "../../store/user";
+import { Routes, Route } from 'react-router-dom';
+import RoomsPage from "../../pages/RoomsPage";
+import UsersPage from "../../pages/UsersPage";
+import settings from "../../store/settings";
 
 const App = observer(() => {
 
   return (
-    <>
-    <CssBaseline />
-    <div>{user.data.username}</div>
-    <button onClick={() => {}}>test</button>
-    </>
+    <ThemeProvider theme={settings.getTheme()}>
+      <CssBaseline />
+      <Routes>          
+          <Route
+            path="/rooms"             
+            element={<RoomsPage />} />
+          <Route
+            path="/users"             
+            element={<UsersPage />} />
+      </Routes>
+    </ThemeProvider>
   );
 })
 

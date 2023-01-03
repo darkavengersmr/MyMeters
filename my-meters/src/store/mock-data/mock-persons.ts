@@ -8,7 +8,7 @@ export const initialUser: IUser[] = [
         isAuth: true,
         isAdmin: true,
         isActive: true,    
-        dateIn: new Date(2018, 10, 10, 0, 0, 0, 0),
+        dateIn: "2018-10-10",
     },
     {
         id: 'user2',
@@ -17,6 +17,6 @@ export const initialUser: IUser[] = [
         isAuth: true,
         isAdmin: false,
         isActive: true,    
-        dateIn: new Date(2020, 10, 10, 0, 0, 0, 0),
+        dateIn: "2020-10-10",
     },
 ]
