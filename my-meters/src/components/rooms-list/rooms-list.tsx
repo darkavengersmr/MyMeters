@@ -17,7 +17,7 @@ function RoomsList({rooms}: RoomsListProps) {
     const [addModal, setAddModal] = useState(false)
 
     const confirmRemoveOk = () => {
-        if (rooms.remove(confirmRemove)) setConfirmRemove('')
+        if (rooms.removeRoom(confirmRemove)) setConfirmRemove('')
     }
 
     const confirmRemoveCancel = () => {
@@ -29,7 +29,7 @@ function RoomsList({rooms}: RoomsListProps) {
         <Table aria-label="simple table">
             <TableBody>
                         {                
-                        rooms.get().map((room) => {
+                        rooms.getRooms().map((room) => {
                             return (
                                     <RoomsListItem
                                         key={room.id} 
@@ -55,7 +55,7 @@ function RoomsList({rooms}: RoomsListProps) {
                    dialogTitle={"Подтверждение удаления"} dialogContentText={"Удалить квартиру из списка?"} />
 
     <AddRoomDialog triggerToOpen={addModal} 
-               funcToCloseOk={rooms.add.bind(rooms)}
+               funcToCloseOk={rooms.addRoom.bind(rooms)}
                funcToCloseCancel={() => setAddModal(false)}
                dialogTitle={"Добавить квартиру"} 
                dialogContentText={"Введите адрес или пояснение"} />

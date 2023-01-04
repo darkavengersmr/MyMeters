@@ -1,5 +1,3 @@
-import { KeyboardEventHandler, useMemo } from 'react';
-
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
@@ -11,37 +9,49 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 import system from '../../store/system'
 import { useInput } from '../../hooks';
-import { IRoom } from '../../models/interfaces';
+import { IMeter } from '../../models/interfaces';
+import { dateNow } from '../../helpers/helpers';
+import user from '../../store/user';
 
 type AddDialogProps = {
     triggerToOpen: boolean
-    funcToCloseOk: (room: IRoom) => void
+    funcToCloseOk: (meter: IMeter, roomId: string) => void    
     funcToCloseCancel: () => void
+    roomId: string
     dialogTitle: string
     dialogContentText: string    
 }
 
-const AddRoomDialog = ({ triggerToOpen, 
+const AddMeterDialog = ({ triggerToOpen, 
                      funcToCloseOk, 
                      funcToCloseCancel, 
+                     roomId,
                      dialogTitle, 
                      dialogContentText                     
                     }: AddDialogProps ) => {
 
 
     const [title, titleAction] = useInput('', 'notNullText')
+    const [initialValue, initialValueAction] = useInput('', 'positiveNumber')
 
 
     const onSubmit = () => {
-        if (!title.value) {
+        if (!title.value || !initialValue.value) {
             system.sendNotification('Заполните все обязательные поля', 'error')
-        } else {
+        } else {            
             funcToCloseOk({                        
                 title: title.value,
                 isActive: true,
-                meters: []
-            })
+                values: [
+                        {
+                            date: dateNow(),
+                            value: parseInt(initialValue.value),
+                            userId: user.data.id!
+                        }
+                ]
+                }, roomId)
             titleAction.setInputValue('')
+            initialValueAction.setInputValue('')
             funcToCloseCancel()
         }                                
     }
@@ -59,11 +69,20 @@ const AddRoomDialog = ({ triggerToOpen,
         <TextField            
             margin="dense"
             id="title"
-            label="Например: Квартира №32"
+            label="Например: газ"
             type="text"
             fullWidth
             variant="standard"
             {...title}            
+        />
+        <TextField            
+            margin="dense"
+            id="title"
+            label="Начальное показание"
+            type="number"
+            fullWidth
+            variant="standard"
+            {...initialValue}            
         />
         </DialogContent>
         <DialogActions>
@@ -75,4 +94,4 @@ const AddRoomDialog = ({ triggerToOpen,
     )
 }
 
-export default AddRoomDialog
+export default AddMeterDialog

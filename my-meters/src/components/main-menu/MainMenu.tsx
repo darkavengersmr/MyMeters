@@ -40,7 +40,7 @@ function MainMenu({openMainMenu, toggleMainMenu}: MainMenuProps) {
             <ListItemText primary="Счетчики" />
           </ListItemButton>
         </ListItem>
-        <ListItem onClick={() => navigate(`/users`)}>
+        <ListItem onClick={() => navigate(`/persons`)}>
           <ListItemButton>
             <ListItemIcon>
               <AccountBoxIcon />

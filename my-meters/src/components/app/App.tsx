@@ -1,8 +1,9 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { Routes, Route } from 'react-router-dom';
+import MetersPage from "../../pages/MetersPage";
+import PersonsPage from "../../pages/PersonsPage";
 import RoomsPage from "../../pages/RoomsPage";
-import UsersPage from "../../pages/UsersPage";
 import settings from "../../store/settings";
 
 const App = observer(() => {
@@ -15,8 +16,11 @@ const App = observer(() => {
             path="/rooms"             
             element={<RoomsPage />} />
           <Route
-            path="/users"             
-            element={<UsersPage />} />
+            path="/meters"             
+            element={<MetersPage />} />
+          <Route
+            path="/persons"             
+            element={<PersonsPage />} />
       </Routes>
     </ThemeProvider>
   );

@@ -1,10 +1,10 @@
 import { observer } from "mobx-react-lite";
 import Layout from "../../components/layout";
 
-function UsersPage() {
+function PersonsPage() {
     return <Layout>
-        <div>UsersPage</div>
+        <div>PersonsPage</div>
     </Layout>
 }
 
-export default observer(UsersPage)
+export default observer(PersonsPage)
