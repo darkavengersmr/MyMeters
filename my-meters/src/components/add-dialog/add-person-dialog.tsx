@@ -9,19 +9,22 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 import system from '../../store/system'
 import { useInput } from '../../hooks';
-import { IRoom } from '../../models/interfaces';
+import { IPerson, IRoom } from '../../models/interfaces';
+import { dateNow } from '../../helpers/helpers';
 
 type AddDialogProps = {
     triggerToOpen: boolean
-    funcToCloseOk: (room: IRoom) => void
+    funcToCloseOk: (room: IPerson) => void
     funcToCloseCancel: () => void
+    roomId: string
     dialogTitle: string
     dialogContentText: string    
 }
 
-const AddRoomDialog = ({ triggerToOpen, 
+const AddPersonDialog = ({ triggerToOpen, 
                      funcToCloseOk, 
                      funcToCloseCancel, 
+                     roomId,
                      dialogTitle, 
                      dialogContentText                     
                     }: AddDialogProps ) => {
@@ -35,9 +38,11 @@ const AddRoomDialog = ({ triggerToOpen,
             system.sendNotification('Заполните все обязательные поля', 'error')
         } else {
             funcToCloseOk({                        
-                title: title.value,
-                isActive: true,
-                meters: []
+                username: title.value,
+                isActive: true,            
+                route: '',    
+                roomId,
+                dateIn: dateNow()
             })
             titleAction.setInputValue('')
             funcToCloseCancel()
@@ -57,7 +62,7 @@ const AddRoomDialog = ({ triggerToOpen,
         <TextField            
             margin="dense"
             id="title"
-            label="Например: Квартира №32"
+            label="Например: Иванов И."
             type="text"
             fullWidth
             variant="standard"
@@ -73,4 +78,4 @@ const AddRoomDialog = ({ triggerToOpen,
     )
 }
 
-export default AddRoomDialog
+export default AddPersonDialog

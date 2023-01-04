@@ -1,22 +1,20 @@
-import { IUser } from "../../models/interfaces"
+import { IPerson } from "../../models/interfaces"
 
-export const initialUser: IUser[] = [
+export const initialPersons: IPerson[] = [
     {
         id: 'user1',
-        username: 'user1',
-        token: '',
-        isAuth: true,
-        isAdmin: true,
+        username: 'Иванов И.',
+        route: '639dd822-17c4afa8-9b0ef1872637d2a',                
         isActive: true,    
         dateIn: "2018-10-10",
+        roomId: 'test1'
     },
     {
         id: 'user2',
-        username: 'user2',
-        token: '',
-        isAuth: true,
-        isAdmin: false,
+        username: 'Петров П.',
+        route: '8c4f34a9-475b0f3f-c4210c041e81fa2',                
         isActive: true,    
         dateIn: "2020-10-10",
+        roomId: 'test2'
     },
 ]

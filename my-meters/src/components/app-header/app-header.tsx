@@ -4,7 +4,6 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 
-
 type AppHeaderProps = {
     username: string
     toggleMainMenu: () => void

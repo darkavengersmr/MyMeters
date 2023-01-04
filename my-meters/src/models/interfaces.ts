@@ -6,6 +6,14 @@ export interface IUser {
     token?: string
     isAuth?: boolean
     isAdmin?: boolean
+    isActive: boolean    
+    dateIn: string    
+}
+
+export interface IPerson {
+    id?: string
+    username: string
+    route: string    
     isActive: boolean
     roomId?: string
     dateIn: string    
@@ -16,7 +24,10 @@ export interface IUserClass {
 }
 
 export interface IPersonsClass {
-    data: IUser[]
+    data: IPerson[]
+    getByRoomId: (roomId: string) => IPerson[]
+    add: (person: IPerson) => void
+    remove: (id: string) => boolean
 }
 
 export interface IMeterValue {
