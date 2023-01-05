@@ -9,12 +9,12 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 import system from '../../store/system'
 import { useInput } from '../../hooks';
-import { IPerson, IRoom } from '../../models/interfaces';
+import { IPerson } from '../../models/interfaces';
 import { dateNow } from '../../helpers/helpers';
 
 type AddDialogProps = {
     triggerToOpen: boolean
-    funcToCloseOk: (room: IPerson) => void
+    funcToCloseOk: (room: IPerson) => Promise<boolean>
     funcToCloseCancel: () => void
     roomId: string
     dialogTitle: string
@@ -33,17 +33,19 @@ const AddPersonDialog = ({ triggerToOpen,
     const [title, titleAction] = useInput('', 'notNullText')
 
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
         if (!title.value) {
             system.sendNotification('Заполните все обязательные поля', 'error')
         } else {
-            funcToCloseOk({                        
+            if (! await funcToCloseOk({                        
                 username: title.value,
                 isActive: true,            
                 route: '',    
                 roomId,
                 dateIn: dateNow()
-            })
+            })) {
+                system.sendNotification('Ошибка создания жильца', 'error')
+            }
             titleAction.setInputValue('')
             funcToCloseCancel()
         }                                

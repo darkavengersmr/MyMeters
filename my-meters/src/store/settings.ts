@@ -7,7 +7,7 @@ class Settings implements ISettingsClass {
     theme = theme.initialTheme    
 
     getTheme(): Theme {
-        return this.theme == 'dark' ? theme.darkTheme : theme.lightTheme
+        return this.theme === 'dark' ? theme.darkTheme : theme.lightTheme
     }
 
     constructor() {

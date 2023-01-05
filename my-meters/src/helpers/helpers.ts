@@ -21,12 +21,18 @@ export function generateUUID() {
             r = (d2 + r)%16 | 0;
             d2 = Math.floor(d2/16);
         }
+        // eslint-disable-next-line
         return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
 }
 
+export function UUIDtoAuth (uuid: string): {email: string, password: string} {
+    const arr = uuid.split('-')
+    return {email: `${arr[0]}@${arr[1]}.ru`, password: `${arr[2]}`}
+}
+
 export function getCurrentHost() {
-    const location = window.location.href.split('/')
-    return `${location[0]}//${location[2]}/`
+    const [protocol, , host, ...rest] = window.location.href.split('/')
+    return `${protocol}//${host}/`
 
 }

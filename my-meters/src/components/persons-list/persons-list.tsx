@@ -5,12 +5,13 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
-import { IPersonsClass, IRoomsClass } from "../../models/interfaces";
+import { IPerson, IPersonsClass, IRoomsClass } from "../../models/interfaces";
 import ConfirmDialog from "../confirm-dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PersonsListItem from "../persons-list-item";
 import AddPersonDialog from "../add-dialog/add-person-dialog";
 import ShareDialog from "../share-dialog";
+import system from "../../store/system";
 
 type MetersListProps = {
     rooms: IRoomsClass
@@ -24,10 +25,12 @@ function PersonsList({rooms, persons}: MetersListProps) {
     const [roomId, setRoomId] = useState('')
     const [addModal, setAddModal] = useState(false)
 
-    const confirmRemoveOk = () => {
-        if (persons.remove(confirmRemove)) {
-            setConfirmRemove('')
-        } 
+    const confirmRemoveOk = async () => {        
+        if (! await persons.remove(confirmRemove)) {
+            system.sendNotification('Ошибка удаления жильца', 'error')
+        }        
+        setConfirmRemove('')
+         
     }
 
     const confirmRemoveCancel = () => {

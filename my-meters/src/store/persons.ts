@@ -1,27 +1,64 @@
-import { makeAutoObservable } from "mobx"
-import { generateUUID } from "../helpers/helpers"
+import { makeAutoObservable, runInAction } from "mobx"
+import { generateUUID, UUIDtoAuth } from "../helpers/helpers"
 import { IPerson, IPersonsClass } from "../models/interfaces"
 import { initialPersons } from "./mock-data/mock-persons"
-
+import ApiPersons from "../services/api-persons"
 
 class Persons implements IPersonsClass {
-    data: IPerson[] = initialPersons
+    data: IPerson[] = []
     
     constructor() {
         makeAutoObservable(this)
     }
 
-    getByRoomId(roomId: string): IPerson[] {                
+    init() {
+        if (this.data.length === 0) {
+            ApiPersons.get().then(persons => {
+                for (let key in persons) {
+                    this.data.push({...persons[key], id: key})                    
+                }
+            })
+        }
+        
+    }
+
+    getByRoomId(roomId: string): IPerson[] {        
         return this.data.filter(person => person.roomId === roomId && person.isActive)
+        
     }
 
-    add(person: IPerson) {
-        const uuid = generateUUID()        
-        this.data.push({...person, id: this.data.length.toString(), route: uuid})
+    async add(person: IPerson): Promise<boolean> {
+        const route = generateUUID()
+        const credentials = UUIDtoAuth(route)  
+
+        if (await ApiPersons.register(credentials.email, credentials.password)) {
+            let id: string
+            try {
+                id = await ApiPersons.add({...person, route})
+            }
+            catch {                
+                return false                
+            }             
+            runInAction(() => {                
+                this.data.push({...person, id, route})                        
+            })
+            return true
+        }                     
+        return false
     }
 
-    remove(id: string): boolean {
-        this.data = this.data.map(person => person.id === id ? {...person, isActive: false} : person)
+    async remove(id: string): Promise<boolean> {        
+        try {
+            const person = this.data.find(person => person.id === id)
+            if (person && await ApiPersons.remove(person)) {
+                runInAction(() => {   
+                    this.data = this.data.map(person => person.id === id ? {...person, isActive: false} : person)                
+                })
+            } else return false            
+        }
+        catch {            
+            return false
+        }        
         return true
     }
     

@@ -20,14 +20,16 @@ export interface IPerson {
 }
 
 export interface IUserClass {
-    data: IUser    
+    data: IUser 
+    login: (email: string, password: string) => Promise<boolean>
 }
 
 export interface IPersonsClass {
     data: IPerson[]
+    init: () => void
     getByRoomId: (roomId: string) => IPerson[]
-    add: (person: IPerson) => void
-    remove: (id: string) => boolean
+    add: (person: IPerson) => Promise<boolean>
+    remove: (id: string) => Promise<boolean>
 }
 
 export interface IMeterValue {
@@ -64,4 +66,32 @@ export interface IRoomsClass {
 export interface ISettingsClass {
     theme: string
     getTheme: () => Theme
+}
+
+export interface LoginResponseType {
+    localId: string
+    email: string
+    displayName: string
+    idToken: string
+    registered: boolean
+    refreshToken: string
+    expiresIn: string
+    error?: any
+  }
+
+export interface ResponseDataType {
+    name?: string
+    error?: string
+}
+
+
+export abstract class IApiUsersClass {
+    static login: (email: string, password: string) => Promise<LoginResponseType | boolean>
+}
+
+export abstract class IApiPersonsClass {
+    static register: (email: string, password: string) => Promise<boolean>
+    static get: () => Promise<IPerson[]>
+    static add: (person: IPerson) => Promise<string>
+    static remove: (person: IPerson) => Promise<boolean>
 }

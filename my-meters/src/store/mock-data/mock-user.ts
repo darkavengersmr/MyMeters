@@ -4,7 +4,7 @@ export const initialUser: IUser = {
     id: 'admin',
     username: 'admin',
     token: '',
-    isAuth: true,
+    isAuth: false,
     isAdmin: true,
     isActive: true,    
     dateIn: "2018-10-10",
