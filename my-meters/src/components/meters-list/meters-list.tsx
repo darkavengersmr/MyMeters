@@ -10,6 +10,7 @@ import ConfirmDialog from "../confirm-dialog";
 import { useState } from "react";
 import MetersListItem from "../meters-list-item/meters-list-item";
 import AddMeterDialog from "../add-dialog/add-meter-dialog";
+import { observer } from "mobx-react-lite";
 
 type MetersListProps = {
     rooms: IRoomsClass
@@ -21,8 +22,8 @@ function MetersList({rooms}: MetersListProps) {
     const [confirmRemoveRoomId, setConfirmRemoveRoomId] = useState('')
     const [addModal, setAddModal] = useState(false)
 
-    const confirmRemoveOk = () => {
-        if (rooms.removeMeter(confirmRemoveMeterId, confirmRemoveRoomId)) {
+    const confirmRemoveOk = async () => {
+        if (await rooms.removeMeter(confirmRemoveMeterId, confirmRemoveRoomId)) {
             setConfirmRemoveMeterId('')
             setConfirmRemoveRoomId('')
         }
@@ -33,7 +34,7 @@ function MetersList({rooms}: MetersListProps) {
         setConfirmRemoveRoomId('')
     }
 
-    const [expanded, setExpanded] = useState<string | false>(rooms.getRooms()[0].id || false )
+    const [expanded, setExpanded] = useState<string | false>(rooms.getRooms().length > 0 ? rooms.getRooms()[0].id! : false )
 
     const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -99,4 +100,4 @@ function MetersList({rooms}: MetersListProps) {
     
 }
 
-export default MetersList;
+export default observer(MetersList)

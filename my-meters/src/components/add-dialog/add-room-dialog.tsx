@@ -13,7 +13,7 @@ import { IRoom } from '../../models/interfaces';
 
 type AddDialogProps = {
     triggerToOpen: boolean
-    funcToCloseOk: (room: IRoom) => void
+    funcToCloseOk: (room: IRoom) => Promise<boolean>
     funcToCloseCancel: () => void
     dialogTitle: string
     dialogContentText: string    
@@ -30,15 +30,17 @@ const AddRoomDialog = ({ triggerToOpen,
     const [title, titleAction] = useInput('', 'notNullText')
 
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
         if (!title.value) {
             system.sendNotification('Заполните все обязательные поля', 'error')
         } else {
-            funcToCloseOk({                        
+            if (! await funcToCloseOk({                        
                 title: title.value,
                 isActive: true,
                 meters: []
-            })
+            })) {
+                system.sendNotification('Ошибка создания квартиры', 'error')
+            }
             titleAction.setInputValue('')
             funcToCloseCancel()
         }                                

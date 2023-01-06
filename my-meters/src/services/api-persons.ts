@@ -60,15 +60,16 @@ export default class ApiPersons implements IApiPersonsClass{
     }
 
     static async remove(person: IPerson): Promise<boolean> {                                
-        const params = new URLSearchParams(`auth=${user.data.token}`)         
+        const params = new URLSearchParams(`auth=${user.data.token}`)
+        const {id, ...rest} = person
         try {
-            const response = await fetch(`${process.env.REACT_APP_DATABASEURL}/persons/${person.id}.json?` + params, {
+            const response = await fetch(`${process.env.REACT_APP_DATABASEURL}/persons/${id}.json?` + params, {
                 method: 'PUT', 
                 headers: {
                     'Content-Type': 'application/json',
                     
                 },           
-                body: JSON.stringify({...person, isActive: false}) 
+                body: JSON.stringify({...rest, isActive: false}) 
                 });
             if (response.status === 200) return true
             else return false

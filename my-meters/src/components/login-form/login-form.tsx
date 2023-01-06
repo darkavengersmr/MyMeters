@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useInput } from "../../hooks";
 import persons from "../../store/persons";
+import rooms from "../../store/rooms";
 
 type LoginFormProps = {
     login: (email: string, password: string) => Promise<boolean>
@@ -22,8 +23,9 @@ function LoginForm({login}: LoginFormProps) {
             setLoginError(true)
             emailAction.setInputValue('')
             passwordAction.setInputValue('')
-        } else {
+        } else {            
             persons.init()
+            rooms.init()
             navigate('/meters');
         }
     }

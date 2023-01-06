@@ -1,24 +1,67 @@
-import { makeAutoObservable } from "mobx"
+import { makeAutoObservable, runInAction } from "mobx"
 import { IMeter, IRoom, IRoomsClass } from "../models/interfaces"
+import ApiMeters from "../services/api-meters"
+import ApiRooms from "../services/api-rooms"
 import { initialRooms } from "./mock-data/mock-rooms"
 
 class Rooms implements IRoomsClass {
-    data: IRoom[] = initialRooms
+    data: IRoom[] = []
     
     constructor() {
         makeAutoObservable(this)
     }
 
-    getRooms(): IRoom[] {
-        return this.data.filter(room => room.isActive)
-    }    
-
-    addRoom(room: IRoom) {
-        this.data.push({...room, id: this.data.length.toString()})        
+    init() {
+        if (this.data.length === 0) {
+            ApiRooms.get().then(rooms => {
+                runInAction(() => {  
+                    for (let keyRoom in rooms) {
+                        if (rooms[keyRoom].meters) {
+                            let newMeters = []
+                            for (let keyMeter in rooms[keyRoom].meters) {
+                                newMeters.push({...rooms[keyRoom].meters[keyMeter], id: keyMeter})
+                            }
+                            this.data.push({...rooms[keyRoom], id: keyRoom, meters: newMeters})
+                        } else {
+                            this.data.push({...rooms[keyRoom], id: keyRoom, meters: []})
+                        }                        
+                    }                    
+                })
+            })
+        }        
     }
 
-    removeRoom(id: string): boolean {
-        this.data = this.data.map(room => room.id === id ? {...room, isActive: false} : room)
+    getRooms(): IRoom[] {        
+        return this.data.filter(room => room.isActive)
+        
+    }    
+
+    async addRoom(room: IRoom): Promise<boolean> {
+        let id: string
+        try {
+            id = await ApiRooms.add(room)
+        }
+        catch {                
+            return false                
+        }                     
+        runInAction(() => {                
+            this.data.push({...room, id})            
+        })
+        return true                
+    }
+
+    async removeRoom(id: string): Promise<boolean> {
+        try {
+            const room = this.data.find(room => room.id === id)
+            if (room && await ApiRooms.remove(room)) {
+                runInAction(() => {                       
+                    this.data = this.data.map(room => room.id === id ? {...room, isActive: false} : room)                
+                })
+            } else return false            
+        }
+        catch {            
+            return false
+        }        
         return true
     }
 
@@ -26,22 +69,42 @@ class Rooms implements IRoomsClass {
         return this.data.find(room => room.id === roomId)!.meters.filter(meter => meter.isActive)
     }
 
-    addMeter(meter: IMeter, roomId: string) {
-        this.data = this.data.map(room => {                        
-            if (room.id === roomId) {                
-                const newMeters = [...room.meters, {...meter, id: room.meters.length.toString()}]
-                return {...room, meters: newMeters}
-            } else return room
-        })        
+    async addMeter(meter: IMeter, roomId: string) {
+        let id: string
+        try {
+            id = await ApiMeters.add(meter, roomId)
+        }
+        catch {                
+            return false                
+        }                     
+        runInAction(() => {                
+            this.data = this.data.map(room => {                        
+                if (room.id === roomId) {                
+                    const newMeters = [...room.meters, {...meter, id}]
+                    return {...room, meters: newMeters}
+                } else return room
+            })           
+        })
+        return true
     }
 
-    removeMeter(meterId: string, roomId: string): boolean {
-        this.data = this.data.map(room => {                        
-            if (room.id === roomId) {
-                const newMeters = room.meters.map(meter => meter.id === meterId ? {...meter, isActive: false} : meter)
-                return {...room, meters: newMeters}
-            } else return room
-        })
+    async removeMeter(meterId: string, roomId: string): Promise<boolean> {
+        const meter = this.getMeters(roomId).find(meter => meter.id === meterId)
+        try {            
+            if (meter && await ApiMeters.remove(meter, roomId)) {
+                runInAction(() => {                       
+                    this.data = this.data.map(room => {                        
+                        if (room.id === roomId) {
+                            const newMeters = room.meters.map(meter => meter.id === meterId ? {...meter, isActive: false} : meter)
+                            return {...room, meters: newMeters}
+                        } else return room
+                    })            
+                })
+            } else return false            
+        }
+        catch {            
+            return false
+        }        
         return true
     }
     

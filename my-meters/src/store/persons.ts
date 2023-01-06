@@ -14,9 +14,11 @@ class Persons implements IPersonsClass {
     init() {
         if (this.data.length === 0) {
             ApiPersons.get().then(persons => {
-                for (let key in persons) {
-                    this.data.push({...persons[key], id: key})                    
-                }
+                runInAction(() => {
+                    for (let key in persons) {
+                        this.data.push({...persons[key], id: key})                    
+                    }
+                })
             })
         }
         

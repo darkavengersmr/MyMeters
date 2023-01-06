@@ -54,12 +54,13 @@ export interface IRoom {
 
 export interface IRoomsClass {
     data: IRoom[]
+    init: () => void
     getRooms: () => IRoom[]
-    addRoom: (room: IRoom) => void
-    removeRoom: (id: string) => boolean
+    addRoom: (room: IRoom) => Promise<boolean>
+    removeRoom: (id: string) => Promise<boolean>
     getMeters: (roomId: string) => IMeter[]
     addMeter: (meter: IMeter, roomId: string) => void
-    removeMeter: (meterId: string, roomId: string) => boolean 
+    removeMeter: (meterId: string, roomId: string) => Promise<boolean>
     getMetersLastValue: (meterId: string, roomId: string) => {date: string | null, value: number | null} 
 }
 
@@ -94,4 +95,15 @@ export abstract class IApiPersonsClass {
     static get: () => Promise<IPerson[]>
     static add: (person: IPerson) => Promise<string>
     static remove: (person: IPerson) => Promise<boolean>
+}
+
+export abstract class IApiRoomsClass {    
+    static get: () => Promise<IRoom[]>
+    static add: (room: IRoom) => Promise<string>
+    static remove: (room: IRoom) => Promise<boolean>
+}
+
+export abstract class IApiMetersClass {        
+    static add: (meter: IMeter, roomId: string) => Promise<string>
+    static remove: (meter: IMeter, roomId: string) => Promise<boolean>
 }

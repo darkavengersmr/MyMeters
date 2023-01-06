@@ -12,6 +12,7 @@ import PersonsListItem from "../persons-list-item";
 import AddPersonDialog from "../add-dialog/add-person-dialog";
 import ShareDialog from "../share-dialog";
 import system from "../../store/system";
+import { observer } from "mobx-react-lite";
 
 type MetersListProps = {
     rooms: IRoomsClass
@@ -37,7 +38,7 @@ function PersonsList({rooms, persons}: MetersListProps) {
         setConfirmRemove('')        
     }
 
-    const [expanded, setExpanded] = useState<string | false>(rooms.getRooms()[0].id || false )
+    const [expanded, setExpanded] = useState<string | false>(rooms.getRooms().length > 0 ? rooms.getRooms()[0].id! : false)
 
     const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -106,4 +107,4 @@ function PersonsList({rooms, persons}: MetersListProps) {
     
 }
 
-export default PersonsList;
+export default observer(PersonsList)

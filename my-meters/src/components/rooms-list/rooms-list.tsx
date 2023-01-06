@@ -6,6 +6,8 @@ import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import ConfirmDialog from "../confirm-dialog";
 import { useState } from "react";
 import AddRoomDialog from "../add-dialog/add-room-dialog";
+import system from "../../store/system";
+import { observer } from "mobx-react-lite";
 
 type RoomsListProps = {
     rooms: IRoomsClass
@@ -16,8 +18,9 @@ function RoomsList({rooms}: RoomsListProps) {
     const [confirmRemove, setConfirmRemove] = useState('')
     const [addModal, setAddModal] = useState(false)
 
-    const confirmRemoveOk = () => {
-        if (rooms.removeRoom(confirmRemove)) setConfirmRemove('')
+    const confirmRemoveOk = async () => {
+        if (await rooms.removeRoom(confirmRemove)) setConfirmRemove('')
+        else system.sendNotification('Ошибка удаления квартиры', 'error')
     }
 
     const confirmRemoveCancel = () => {
@@ -64,4 +67,4 @@ function RoomsList({rooms}: RoomsListProps) {
     
 }
 
-export default RoomsList;
+export default observer(RoomsList)
