@@ -17,7 +17,7 @@ class Persons implements IPersonsClass {
                 runInAction(() => {
                     for (let key in persons) {
                         this.data.push({...persons[key], id: key})                    
-                    }
+                    }                    
                 })
             })
         }
@@ -27,6 +27,10 @@ class Persons implements IPersonsClass {
     getByRoomId(roomId: string): IPerson[] {        
         return this.data.filter(person => person.roomId === roomId && person.isActive)
         
+    }
+
+    getByRoute(route: string): IPerson | undefined {                      
+        return this.data.find(person => person.route === route && person.isActive)        
     }
 
     async add(person: IPerson): Promise<boolean> {

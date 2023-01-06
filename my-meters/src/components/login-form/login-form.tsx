@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useInput } from "../../hooks";
 import persons from "../../store/persons";
 import rooms from "../../store/rooms";
+import user from "../../store/user";
 
 type LoginFormProps = {
     login: (email: string, password: string) => Promise<boolean>
@@ -23,10 +24,11 @@ function LoginForm({login}: LoginFormProps) {
             setLoginError(true)
             emailAction.setInputValue('')
             passwordAction.setInputValue('')
-        } else {            
+        } else { 
             persons.init()
             rooms.init()
-            navigate('/meters');
+            if (user.data.isAdmin) navigate('/meters')
+            else navigate('/send')
         }
     }
 

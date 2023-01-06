@@ -19,13 +19,21 @@ class User implements IUserClass {
                 this.data.isAuth = true
                 this.data.id = user.localId
                 this.data.token = user.idToken
+                if (process.env.REACT_APP_ADMIN === user.email) {                    
+                    this.data.isAdmin = true
+                }                
             })            
             return true
         } else return false
             
     }
-
     
+    set(user: IUser) {
+        this.data.username = user.username
+        this.data.dateIn = user.dateIn
+        this.data.roomId = user.roomId
+        this.data.id = user.id
+    }
 }
 
 export default new User()

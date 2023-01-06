@@ -7,6 +7,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import SettingsIcon from '@mui/icons-material/Settings';
 import TimelineIcon from '@mui/icons-material/Timeline';
+import user from "../../store/user";
 
 type MainMenuProps = {
     openMainMenu: boolean
@@ -23,33 +24,48 @@ function MainMenu({openMainMenu, toggleMainMenu}: MainMenuProps) {
     onClose={toggleMainMenu}
     onOpen={toggleMainMenu}
   >
-    <List>           
-        <ListItem onClick={() => navigate(`/rooms`)}>
+    <List>                   
+        <ListItem onClick={() => navigate(`/send`)}>
           <ListItemButton>
             <ListItemIcon>
               <ListAltIcon />
             </ListItemIcon>
-            <ListItemText primary="Квартиры" />
+            <ListItemText primary="Подать показания" />
           </ListItemButton>
         </ListItem>
-        <ListItem onClick={() => navigate(`/meters`)}>
-          <ListItemButton>
-            <ListItemIcon>
-              <CategoryIcon />
-            </ListItemIcon>
-            <ListItemText primary="Счетчики" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem onClick={() => navigate(`/persons`)}>
-          <ListItemButton>
-            <ListItemIcon>
-              <AccountBoxIcon />
-            </ListItemIcon>
-            <ListItemText primary="Жильцы" />
-          </ListItemButton>
-        </ListItem>                  
+    </List>        
+    <Divider />
+    { user.data.isAdmin &&
+    <>
+    <List>                   
+    <ListItem onClick={() => navigate(`/rooms`)}>
+      <ListItemButton>
+        <ListItemIcon>
+          <ListAltIcon />
+        </ListItemIcon>
+        <ListItemText primary="Квартиры" />
+      </ListItemButton>
+    </ListItem>
+    <ListItem onClick={() => navigate(`/meters`)}>
+      <ListItemButton>
+        <ListItemIcon>
+          <CategoryIcon />
+        </ListItemIcon>
+        <ListItemText primary="Счетчики" />
+      </ListItemButton>
+    </ListItem>
+    <ListItem onClick={() => navigate(`/persons`)}>
+      <ListItemButton>
+        <ListItemIcon>
+          <AccountBoxIcon />
+        </ListItemIcon>
+        <ListItemText primary="Жильцы" />
+      </ListItemButton>
+    </ListItem>                  
     </List>
     <Divider />
+    </>
+    }    
     <List>
         <ListItem onClick={() => navigate(`/history`)}>
           <ListItemButton>

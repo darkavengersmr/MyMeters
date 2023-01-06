@@ -37,4 +37,4 @@ function AppHeader({toggleMainMenu, username}: AppHeaderProps) {
     </AppBar>
 }
 
-export default AppHeader;
+export default AppHeader

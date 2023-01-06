@@ -1,11 +1,11 @@
 import { IUser } from "../../models/interfaces"
 
 export const initialUser: IUser = {
-    id: 'admin',
-    username: 'admin',
+    id: '',
+    username: '',
     token: '',
     isAuth: false,
-    isAdmin: true,
+    isAdmin: false,
     isActive: true,    
-    dateIn: "2018-10-10",
+    dateIn: "",
 }

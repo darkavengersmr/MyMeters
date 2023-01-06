@@ -36,6 +36,11 @@ class Rooms implements IRoomsClass {
         
     }    
 
+    getRoomById(id: string): IRoom | undefined {        
+        return this.data.find(room => room.id === id && room.isActive)
+        
+    } 
+
     async addRoom(room: IRoom): Promise<boolean> {
         let id: string
         try {

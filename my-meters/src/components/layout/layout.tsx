@@ -18,7 +18,7 @@ function Layout({children}: LayoutProps) {
     }
 
     return <>
-        <AppHeader toggleMainMenu={toggleMainMenu} username={user.data.username}/>
+        <AppHeader toggleMainMenu={toggleMainMenu} username={user.data.isAdmin ? 'Администратор' : user.data.username}/>
         <MainMenu openMainMenu={openMainMenu} toggleMainMenu={toggleMainMenu}/>
         {children}
         {system.getNotification()}

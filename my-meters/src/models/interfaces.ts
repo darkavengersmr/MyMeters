@@ -6,7 +6,8 @@ export interface IUser {
     token?: string
     isAuth?: boolean
     isAdmin?: boolean
-    isActive: boolean    
+    isActive: boolean
+    roomId?: string    
     dateIn: string    
 }
 
@@ -22,12 +23,14 @@ export interface IPerson {
 export interface IUserClass {
     data: IUser 
     login: (email: string, password: string) => Promise<boolean>
+    set: (user: IUser) => void
 }
 
 export interface IPersonsClass {
     data: IPerson[]
     init: () => void
     getByRoomId: (roomId: string) => IPerson[]
+    getByRoute: (route: string) => IPerson | undefined
     add: (person: IPerson) => Promise<boolean>
     remove: (id: string) => Promise<boolean>
 }
@@ -56,6 +59,7 @@ export interface IRoomsClass {
     data: IRoom[]
     init: () => void
     getRooms: () => IRoom[]
+    getRoomById: (id: string) => IRoom | undefined
     addRoom: (room: IRoom) => Promise<boolean>
     removeRoom: (id: string) => Promise<boolean>
     getMeters: (roomId: string) => IMeter[]

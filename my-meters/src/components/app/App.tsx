@@ -5,6 +5,7 @@ import LoginPage from "../../pages/LoginPage/LoginPage";
 import MetersPage from "../../pages/MetersPage";
 import PersonsPage from "../../pages/PersonsPage";
 import RoomsPage from "../../pages/RoomsPage";
+import SendValuesPage from "../../pages/SendValuesPage";
 import settings from "../../store/settings";
 import user from "../../store/user";
 
@@ -13,9 +14,9 @@ const App = observer(() => {
   return (
     <ThemeProvider theme={settings.getTheme()}>
       <CssBaseline />      
-      <Routes>
+      <Routes>          
           {
-            user.data.isAuth &&
+            user.data.isAdmin &&
             <>
             <Route
             path="/rooms"             
@@ -28,6 +29,9 @@ const App = observer(() => {
             element={<PersonsPage />} />
             </>
           }          
+          <Route
+          path="/send"             
+          element={<SendValuesPage />} />
           <Route
             path="/login"
             element={<LoginPage />} />
