@@ -15,7 +15,7 @@ import user from '../../store/user';
 
 type AddDialogProps = {
     triggerToOpen: boolean
-    funcToCloseOk: (meter: IMeter, roomId: string) => void    
+    funcToCloseOk: (meter: IMeter, roomId: string, initialValue: number) => void    
     funcToCloseCancel: () => void
     roomId: string
     dialogTitle: string
@@ -42,14 +42,8 @@ const AddMeterDialog = ({ triggerToOpen,
             funcToCloseOk({                        
                 title: title.value,
                 isActive: true,
-                values: [
-                        {
-                            date: dateNow(),
-                            value: parseInt(initialValue.value),
-                            userId: user.data.id!
-                        }
-                ]
-                }, roomId)
+                values: []                
+                }, roomId, parseInt(initialValue.value))
             titleAction.setInputValue('')
             initialValueAction.setInputValue('')
             funcToCloseCancel()

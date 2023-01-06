@@ -1,8 +1,9 @@
 import { makeAutoObservable, runInAction } from "mobx"
-import { IMeter, IRoom, IRoomsClass } from "../models/interfaces"
+import { dateNow } from "../helpers/helpers"
+import { IMeter, IMeterValue, IRoom, IRoomsClass } from "../models/interfaces"
 import ApiMeters from "../services/api-meters"
 import ApiRooms from "../services/api-rooms"
-import { initialRooms } from "./mock-data/mock-rooms"
+import user from "./user"
 
 class Rooms implements IRoomsClass {
     data: IRoom[] = []
@@ -19,7 +20,15 @@ class Rooms implements IRoomsClass {
                         if (rooms[keyRoom].meters) {
                             let newMeters = []
                             for (let keyMeter in rooms[keyRoom].meters) {
-                                newMeters.push({...rooms[keyRoom].meters[keyMeter], id: keyMeter})
+                                if (rooms[keyRoom].meters[keyMeter].values) {
+                                    let newValues = []
+                                    for (let keyValue in rooms[keyRoom].meters[keyMeter].values) {
+                                        newValues.push({...rooms[keyRoom].meters[keyMeter].values[keyValue]})
+                                    }
+                                    newMeters.push({...rooms[keyRoom].meters[keyMeter], id: keyMeter, values: newValues})
+                                } else {
+                                    newMeters.push({...rooms[keyRoom].meters[keyMeter], id: keyMeter, values: []})
+                                }                                
                             }
                             this.data.push({...rooms[keyRoom], id: keyRoom, meters: newMeters})
                         } else {
@@ -31,9 +40,8 @@ class Rooms implements IRoomsClass {
         }        
     }
 
-    getRooms(): IRoom[] {        
-        return this.data.filter(room => room.isActive)
-        
+    getRooms(): IRoom[] {                
+        return this.data.filter(room => room.isActive)        
     }    
 
     getRoomById(id: string): IRoom | undefined {        
@@ -70,22 +78,28 @@ class Rooms implements IRoomsClass {
         return true
     }
 
-    getMeters(roomId: string): IMeter[] {                    
+    getMeters(roomId: string): IMeter[] {                       
         return this.data.find(room => room.id === roomId)!.meters.filter(meter => meter.isActive)
     }
 
-    async addMeter(meter: IMeter, roomId: string) {
+    async addMeter(meter: IMeter, roomId: string, initialValue: number) {
         let id: string
         try {
             id = await ApiMeters.add(meter, roomId)
+            await this.setMeterValue(
+                {
+                    date: dateNow(),
+                    value: initialValue,
+                    userId: user.data.id!
+                }, id, roomId)
         }
         catch {                
             return false                
         }                     
         runInAction(() => {                
             this.data = this.data.map(room => {                        
-                if (room.id === roomId) {                
-                    const newMeters = [...room.meters, {...meter, id}]
+                if (room.id === roomId) {                    
+                    const newMeters = [...room.meters, {...meter, id, values: [{date: dateNow(), value: initialValue, userId: user.data.id!}]}]
                     return {...room, meters: newMeters}
                 } else return room
             })           
@@ -114,10 +128,30 @@ class Rooms implements IRoomsClass {
     }
     
     getMetersLastValue(meterId: string, roomId: string): {date: string | null, value: number | null} {         
-        const values = this.data.find(room => room.id === roomId)?.meters?.find(meter => meter.id === meterId)?.values        
+        const values = this.data.find(room => room.id === roomId)?.meters?.find(meter => meter.id === meterId)?.values 
         if (values && values.length > 0) {
             return { date: values[values.length-1].date, value: values[values.length-1].value}
         } else return { date: null, value: null}
+    }
+
+    async setMeterValue(meterValue: IMeterValue, meterId: string, roomId: string): Promise<boolean> {
+        try {
+            const id = await ApiMeters.addValue(meterValue, meterId, roomId)
+            runInAction(() => {
+                let room = this.data.find(room => room.id === roomId)
+                if (room) {
+                    let meter = room.meters.find(meter => meter.id === meterId)
+                    if (meter) {
+                        meter.values?.push(meterValue)
+                        this.data = [...this.data, {...room, meters: [...room.meters, meter]}]                         
+                    }
+                }    
+            })
+        }
+        catch {                
+            return false                
+        }                     
+        return true            
     }
 
 }

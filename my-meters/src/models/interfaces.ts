@@ -45,7 +45,7 @@ export interface IMeter {
     id?: string
     title: string
     isActive: boolean
-    values?: IMeterValue[]    
+    values: IMeterValue[]    
 }
 
 export interface IRoom {
@@ -63,9 +63,10 @@ export interface IRoomsClass {
     addRoom: (room: IRoom) => Promise<boolean>
     removeRoom: (id: string) => Promise<boolean>
     getMeters: (roomId: string) => IMeter[]
-    addMeter: (meter: IMeter, roomId: string) => void
+    addMeter: (meter: IMeter, roomId: string, initialValue: number) => void
     removeMeter: (meterId: string, roomId: string) => Promise<boolean>
     getMetersLastValue: (meterId: string, roomId: string) => {date: string | null, value: number | null} 
+    setMeterValue: (meterValue: IMeterValue, meterId: string, roomId: string) => Promise<boolean>
 }
 
 export interface ISettingsClass {
@@ -110,4 +111,5 @@ export abstract class IApiRoomsClass {
 export abstract class IApiMetersClass {        
     static add: (meter: IMeter, roomId: string) => Promise<string>
     static remove: (meter: IMeter, roomId: string) => Promise<boolean>
+    static addValue: (meterValue: IMeter, meterId: string, roomId: string) => Promise<string>
 }

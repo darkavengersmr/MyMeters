@@ -81,8 +81,6 @@ function MetersList({rooms}: MetersListProps) {
         </AccordionDetails>
       </Accordion>
     ))}
-
-    
     
     <ConfirmDialog triggerToOpen={!!confirmRemoveMeterId} 
                    funcToCloseOk={confirmRemoveOk} 

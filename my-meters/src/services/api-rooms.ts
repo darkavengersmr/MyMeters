@@ -43,13 +43,13 @@ export default class ApiRooms implements IApiRoomsClass{
         const params = new URLSearchParams(`auth=${user.data.token}`)
         const {id, ...rest} = room
         try {
-            const response = await fetch(`${process.env.REACT_APP_DATABASEURL}/rooms/${id}.json?` + params, {
+            const response = await fetch(`${process.env.REACT_APP_DATABASEURL}/rooms/${id}/isActive.json?` + params, {
                 method: 'PUT', 
                 headers: {
                     'Content-Type': 'application/json',
                     
                 },           
-                body: JSON.stringify({...rest, isActive: false}) 
+                body: JSON.stringify(false) 
                 });
             if (response.status === 200) return true
             else return false
