@@ -136,7 +136,7 @@ class Rooms implements IRoomsClass {
 
     async setMeterValue(meterValue: IMeterValue, meterId: string, roomId: string): Promise<boolean> {
         try {
-            const id = await ApiMeters.addValue(meterValue, meterId, roomId)
+            await ApiMeters.addValue(meterValue, meterId, roomId)
             runInAction(() => {
                 let room = this.data.find(room => room.id === roomId)
                 if (room) {

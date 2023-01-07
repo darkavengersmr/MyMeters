@@ -1,7 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx"
 import { generateUUID, UUIDtoAuth } from "../helpers/helpers"
 import { IPerson, IPersonsClass } from "../models/interfaces"
-import { initialPersons } from "./mock-data/mock-persons"
 import ApiPersons from "../services/api-persons"
 
 class Persons implements IPersonsClass {

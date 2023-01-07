@@ -1,21 +1,22 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import Layout from "../../components/layout/layout";
+
 import SendValues from "../../components/send-values";
 import user from "../../store/user";
 import persons from "../../store/persons";
 import rooms from '../../store/rooms';
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { observer } from 'mobx-react-lite';
 
 function SendValuesPage() {
-    const [search, setSearch] = useSearchParams();    
+    const [search] = useSearchParams();    
 
     const navigate = useNavigate()
     const route = search.get('id')
 
     useEffect(() => {
-        if (route) {
+        if (route && !user.data.isAdmin) {
             const [name, host, sec] = route.split('-')
             if (name && host && sec) {
                 user.login(`${name}@${host}.ru`, sec).then(result => {
@@ -27,22 +28,22 @@ function SendValuesPage() {
                     }
                 })
             }
-        }               
+        }
+    // eslint-disable-next-line
     }, [])
 
     useEffect(() => {
-        if (route) {
+        if (route && !user.data.isAdmin) {
             const person = persons.getByRoute(route)
             if (person) user.set(person)                                   
         } 
+    // eslint-disable-next-line
     }, [persons.data.length])
 
-    return <>
-            <div>{}</div>
-            <Layout>                
+    return <Layout>
                 <SendValues room={rooms.getRoomById(user.data.roomId!)}/>                
-            </Layout>
-    </>
+         </Layout>
+    
         
 }
 

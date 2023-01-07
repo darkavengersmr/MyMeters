@@ -1,17 +1,18 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { Routes, Route } from 'react-router-dom';
+import HistoryValuesPage from "../../pages/HistoryValuesPage/HistoryValuesPage";
 import LoginPage from "../../pages/LoginPage/LoginPage";
 import MetersPage from "../../pages/MetersPage";
 import PersonsPage from "../../pages/PersonsPage";
+import ReportsPage from "../../pages/ReportsPasge/ReportsPage";
 import RoomsPage from "../../pages/RoomsPage";
 import SendValuesPage from "../../pages/SendValuesPage";
 import settings from "../../store/settings";
 import user from "../../store/user";
 
 const App = observer(() => {
-
-  return (
+  return (    
     <ThemeProvider theme={settings.getTheme()}>
       <CssBaseline />      
       <Routes>          
@@ -27,6 +28,17 @@ const App = observer(() => {
           <Route
             path="/persons"             
             element={<PersonsPage />} />
+            </>
+          }
+          {
+            user.data.isAuth &&
+            <>
+            <Route
+            path="/history"             
+            element={<HistoryValuesPage />} />      
+            <Route
+            path="/report"             
+            element={<ReportsPage />} />    
             </>
           }          
           <Route

@@ -14,6 +14,7 @@ type SendValuesItemProps = {
 
 function SendValuesItem({meter, lastValue, sendValue}: SendValuesItemProps) {    
 
+    // eslint-disable-next-line
     const [meterValue, meterValueAction] = useInput('', 'notNullText')
 
     return <>
@@ -28,7 +29,7 @@ function SendValuesItem({meter, lastValue, sendValue}: SendValuesItemProps) {
                         Дата: {lastValue.date? dateTransform(lastValue.date) : ""}                         
                     </Typography>
                     {
-                        lastValue.date && dateNow() != lastValue.date &&
+                        lastValue.date && dateNow() !== lastValue.date &&
                         <TextField                            
                             margin="dense"                    
                             label="Введите текущее показание"
@@ -46,7 +47,7 @@ function SendValuesItem({meter, lastValue, sendValue}: SendValuesItemProps) {
                     }
                 </CardContent>            
                 <CardActions>
-                    { lastValue.date && dateNow() != lastValue.date &&
+                    { lastValue.date && dateNow() !== lastValue.date &&
                         <Grid container 
                         direction="column"                                 
                         >

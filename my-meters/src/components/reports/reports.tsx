@@ -2,18 +2,17 @@ import { Container, Grid, Typography } from "@mui/material"
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
-import { dateNow } from "../../helpers/helpers"
 import { IRoom } from "../../models/interfaces"
 import rooms from "../../store/rooms"
 import user from "../../store/user"
-import SendValuesItem from "../send-value-item/send-value-item"
 import { useState } from "react";
+import ReportsItem from "../reports-item";
 
-type SendValuesProps = {
+type ReportsProps = {
     room: IRoom | undefined
 }
 
-function SendValues({room}: SendValuesProps) {    
+function Reports({room}: ReportsProps) {    
 
     const [selectRoom, setSelectRoom] = useState(room)
     const [selectRoomId, setSelectRoomId] = useState(rooms.getRooms().length > 0 ? rooms.getRooms()[0].id : '')
@@ -24,7 +23,7 @@ function SendValues({room}: SendValuesProps) {
                 >
 
     <Typography textAlign='center' variant="h5" sx={{ mb: 2}}>
-        Передать показания
+        Графики потребления
     </Typography>
 
     {
@@ -46,25 +45,17 @@ function SendValues({room}: SendValuesProps) {
     }
 
     {
-        selectRoom && user.data.isAdmin &&
-        selectRoom.meters.map(meter => <SendValuesItem key={meter.id} 
-                                                       meter={meter} 
-                                                       lastValue={rooms.getMetersLastValue(meter.id!, selectRoom.id!)} 
-                                                       sendValue={(meter, value) => rooms.setMeterValue({userId: user.data.id!, date: dateNow(), value: parseInt(value)}, meter.id!, selectRoom.id!)}
-                                   />)
+        selectRoom && selectRoom.meters && user.data.isAdmin &&
+        selectRoom.meters.map(meter => <ReportsItem key={meter.id} meter={meter} limit={12} />)
     }
 
     {
-        room && !user.data.isAdmin &&
-        room.meters.map(meter => <SendValuesItem key={meter.id} 
-                                                       meter={meter} 
-                                                       lastValue={rooms.getMetersLastValue(meter.id!, room.id!)} 
-                                                       sendValue={(meter, value) => rooms.setMeterValue({userId: user.data.id!, date: dateNow(), value: parseInt(value)}, meter.id!, room.id!)}
-                                   />)
+        room && room.meters && !user.data.isAdmin &&
+        room.meters.map(meter => <ReportsItem key={meter.id} meter={meter} limit={6} />)
     }
 
     </Grid>    
 </Container>
 }
 
-export default SendValues
+export default Reports

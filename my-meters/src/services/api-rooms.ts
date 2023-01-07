@@ -41,7 +41,7 @@ export default class ApiRooms implements IApiRoomsClass{
 
     static async remove(room: IRoom): Promise<boolean> {                                
         const params = new URLSearchParams(`auth=${user.data.token}`)
-        const {id, ...rest} = room
+        const {id} = room
         try {
             const response = await fetch(`${process.env.REACT_APP_DATABASEURL}/rooms/${id}/isActive.json?` + params, {
                 method: 'PUT', 

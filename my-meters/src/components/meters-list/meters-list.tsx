@@ -17,7 +17,6 @@ type MetersListProps = {
 }
 
 function MetersList({rooms}: MetersListProps) {
-
     const [confirmRemoveMeterId, setConfirmRemoveMeterId] = useState('')
     const [confirmRemoveRoomId, setConfirmRemoveRoomId] = useState('')
     const [addModal, setAddModal] = useState(false)

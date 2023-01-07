@@ -5,7 +5,7 @@ export default class ApiPersons implements IApiPersonsClass{
     static async register(email: string, password: string): Promise<boolean> {
         
         try {
-            const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_APIKEY}`, {
+            await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_APIKEY}`, {
             method: 'POST', 
             headers: {
               'Content-Type': 'application/json'              

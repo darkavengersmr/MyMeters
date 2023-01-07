@@ -24,7 +24,7 @@ export default class ApiMeters implements IApiMetersClass{
 
     static async remove(meter: IMeter, roomId: string): Promise<boolean> {                                
         const params = new URLSearchParams(`auth=${user.data.token}`)
-        const {id, ...rest} = meter
+        const {id} = meter
         try {
             const response = await fetch(`${process.env.REACT_APP_DATABASEURL}/rooms/${roomId}/meters/${id}/isActive.json?` + params, {
                 method: 'PUT', 

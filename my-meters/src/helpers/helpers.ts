@@ -32,7 +32,25 @@ export function UUIDtoAuth (uuid: string): {email: string, password: string} {
 }
 
 export function getCurrentHost() {
+    // eslint-disable-next-line
     const [protocol, , host, ...rest] = window.location.href.split('/')
     return `${protocol}//${host}/`
 
+}
+
+export function getColorByMeterTitle(meterTitle: string): string {
+    let meterColors = [
+        ["Холодная", 'rgb(0, 0, 255)'],
+        ["Горячая", 'rgb(255, 0, 0)'],
+        ["Электричество день", 'rgb(64, 255, 0)'],
+        ["Электричество ночь", 'rgb(0, 255, 64)'],
+        ["Электричество", 'rgb(0, 255, 0)'],
+        ["Газ", 'rgb(255, 255, 0)'],
+      ];    
+
+    for (let [meter, color] of meterColors) {        
+        if (meterTitle.indexOf(meter) >= 0) return color
+    }
+
+    return 'rgb(0, 255, 255)'                    
 }
