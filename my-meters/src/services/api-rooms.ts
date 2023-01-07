@@ -3,12 +3,12 @@ import user from "../store/user";
 
 export default class ApiRooms implements IApiRoomsClass{    
 
-    static async get(): Promise<IRoom[]> {        
-        let responseData: IRoom[]
+    static async get(id?: string): Promise<{[key: string]: IRoom}> {        
+        let responseData: {[key: string]: IRoom} | IRoom
                     
         const params = new URLSearchParams(`auth=${user.data.token}`)
 
-        const response = await fetch(`${process.env.REACT_APP_DATABASEURL}/rooms.json?` + params, {
+        const response = await fetch(`${process.env.REACT_APP_DATABASEURL}/rooms${id ? '/'+id : ''}.json?` + params, {
         method: 'GET', 
         headers: {
             'Content-Type': 'application/json',
@@ -16,8 +16,14 @@ export default class ApiRooms implements IApiRoomsClass{
         },        
         });
 
-        responseData = await response.json() as IRoom[]        
-        return responseData
+        if (id) {
+            responseData = await response.json() as IRoom
+            return {[id]: responseData}
+        } else {
+            responseData = await response.json() as {[key: string]: IRoom}
+            return responseData
+        }
+        
     }
 
     static async add(room: IRoom): Promise<string> {        

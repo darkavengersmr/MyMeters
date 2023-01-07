@@ -23,8 +23,8 @@ export default class ApiPersons implements IApiPersonsClass{
         return true        
     }
 
-    static async get(): Promise<IPerson[]> {        
-        let responseData: IPerson[]
+    static async get(): Promise<{[key: string]: IPerson}> {        
+        let responseData: {[key: string]: IPerson}  
                     
         const params = new URLSearchParams(`auth=${user.data.token}`)
 
@@ -36,7 +36,7 @@ export default class ApiPersons implements IApiPersonsClass{
         },        
         });
 
-        responseData = await response.json() as IPerson[]        
+        responseData = await response.json() as {[key: string]: IPerson}     
         return responseData
     }
 

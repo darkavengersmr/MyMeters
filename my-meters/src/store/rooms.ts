@@ -12,10 +12,10 @@ class Rooms implements IRoomsClass {
         makeAutoObservable(this)
     }
 
-    init() {
+    init(roomId?: string) {
         if (this.data.length === 0) {
-            ApiRooms.get().then(rooms => {
-                runInAction(() => {  
+            ApiRooms.get(roomId).then(rooms => {
+                runInAction(() => {
                     for (let keyRoom in rooms) {
                         if (rooms[keyRoom].meters) {
                             let newMeters = []

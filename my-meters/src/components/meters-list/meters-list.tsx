@@ -94,7 +94,6 @@ function MetersList({rooms}: MetersListProps) {
                dialogContentText={"Введите вид счетчика"} />
         
     </Container>    
-    
 }
 
 export default observer(MetersList)

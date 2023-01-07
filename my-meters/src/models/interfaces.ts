@@ -90,20 +90,19 @@ export interface ResponseDataType {
     error?: string
 }
 
-
 export abstract class IApiUsersClass {
     static login: (email: string, password: string) => Promise<LoginResponseType | boolean>
 }
 
 export abstract class IApiPersonsClass {
     static register: (email: string, password: string) => Promise<boolean>
-    static get: () => Promise<IPerson[]>
+    static get: () => Promise<{[key: string]: IPerson}>
     static add: (person: IPerson) => Promise<string>
     static remove: (person: IPerson) => Promise<boolean>
 }
 
 export abstract class IApiRoomsClass {    
-    static get: () => Promise<IRoom[]>
+    static get: () => Promise<Promise<{[key: string]: IRoom}>>
     static add: (room: IRoom) => Promise<string>
     static remove: (room: IRoom) => Promise<boolean>
 }

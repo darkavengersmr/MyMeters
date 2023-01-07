@@ -1,5 +1,4 @@
-import { Card, CardContent, Typography } from "@mui/material"
-import Box from "@mui/material/Box";
+import { Card, Typography } from "@mui/material"
 
 import {
     Chart as ChartJS,

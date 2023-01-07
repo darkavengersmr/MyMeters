@@ -1,11 +1,13 @@
 import { observer } from "mobx-react-lite";
 import Layout from "../../components/layout";
 import MetersList from "../../components/meters-list";
+import Spinner from "../../components/spinner";
 import rooms from "../../store/rooms"
 
 function MetersPage() {
     return <Layout>
-        <MetersList rooms={rooms} />
+        {rooms.getRooms().length === 0 && <Spinner/>}
+        {rooms.getRooms().length > 0 && <MetersList rooms={rooms} />}        
     </Layout>
 }
 

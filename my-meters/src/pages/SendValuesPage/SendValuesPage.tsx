@@ -8,6 +8,7 @@ import persons from "../../store/persons";
 import rooms from '../../store/rooms';
 import { useEffect } from "react";
 import { observer } from 'mobx-react-lite';
+import Spinner from '../../components/spinner';
 
 function SendValuesPage() {
     const [search] = useSearchParams();    
@@ -21,8 +22,7 @@ function SendValuesPage() {
             if (name && host && sec) {
                 user.login(`${name}@${host}.ru`, sec).then(result => {
                     if (result) {
-                        persons.init()
-                        rooms.init()                                             
+                        persons.init()                                                                  
                     } else {
                         navigate('/login')
                     }
@@ -40,8 +40,14 @@ function SendValuesPage() {
     // eslint-disable-next-line
     }, [persons.data.length])
 
+    useEffect(() => {
+        if (user.data.roomId && !user.data.isAdmin) rooms.init(user.data.roomId)
+    // eslint-disable-next-line
+    }, [user.data.roomId])
+
     return <Layout>
-                <SendValues room={rooms.getRoomById(user.data.roomId!)}/>                
+                {rooms.getRooms().length === 0 && <Spinner />}
+                {rooms.getRooms().length > 0 && <SendValues room={rooms.getRoomById(user.data.roomId!)} />}
          </Layout>
     
         
