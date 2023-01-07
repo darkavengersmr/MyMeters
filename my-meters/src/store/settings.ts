@@ -10,6 +10,10 @@ class Settings implements ISettingsClass {
         return this.theme === 'dark' ? theme.darkTheme : theme.lightTheme
     }
 
+    setTheme(theme: 'dark' | 'light') {
+        this.theme = theme
+    }
+
     constructor() {
         makeAutoObservable(this)
     }

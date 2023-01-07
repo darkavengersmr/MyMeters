@@ -69,9 +69,9 @@ export interface IRoomsClass {
     setMeterValue: (meterValue: IMeterValue, meterId: string, roomId: string) => Promise<boolean>
 }
 
-export interface ISettingsClass {
-    theme: string
+export interface ISettingsClass {    
     getTheme: () => Theme
+    setTheme: (theme: 'dark' | 'light') => void
 }
 
 export interface LoginResponseType {
