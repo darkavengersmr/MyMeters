@@ -12,10 +12,10 @@ class Rooms implements IRoomsClass {
         makeAutoObservable(this)
     }
 
-    init(roomId?: string) {
-        if (this.data.length === 0) {
+    init(roomId?: string) {        
             ApiRooms.get(roomId).then(rooms => {
                 runInAction(() => {
+                    const newRooms = [] as IRoom[]
                     for (let keyRoom in rooms) {
                         if (rooms[keyRoom].meters) {
                             let newMeters = []
@@ -30,14 +30,16 @@ class Rooms implements IRoomsClass {
                                     newMeters.push({...rooms[keyRoom].meters[keyMeter], id: keyMeter, values: []})
                                 }                                
                             }
-                            this.data.push({...rooms[keyRoom], id: keyRoom, meters: newMeters})
+                            newRooms.push({...rooms[keyRoom], id: keyRoom, meters: newMeters})
                         } else {
-                            this.data.push({...rooms[keyRoom], id: keyRoom, meters: []})
+                            newRooms.push({...rooms[keyRoom], id: keyRoom, meters: []})
                         }                        
+                    }
+                    if (this.data.length === 0) {
+                        this.data = newRooms
                     }                    
                 })
-            })
-        }        
+            })        
     }
 
     getRooms(): IRoom[] {                

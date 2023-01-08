@@ -1,5 +1,4 @@
 import { useCallback} from 'react';
-import { useCookies } from 'react-cookie';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -10,22 +9,16 @@ import { observer } from 'mobx-react-lite';
 
 const SettingsPage = () => {
 
-    const [, setCookie] = useCookies();
-
     const handleChangeTheme = useCallback(() => {        
         if (settings.theme === 'light') {            
             settings.setTheme('dark')
-            setCookie('mymeters_theme', 
-                      'dark',  
-                      {maxAge: 60*60*24*365*5});
+            localStorage.setItem('mymeters_theme', 'dark')
         } else {
             settings.setTheme('light')
-            setCookie('mymeters_theme', 
-                      'light', 
-                      {maxAge: 60*60*24*365*5})
+            localStorage.setItem('mymeters_theme', 'light')            
         }   
     // eslint-disable-next-line     
-    }, [settings.theme, setCookie])
+    }, [settings.theme])
 
     return <Layout>
             <Container sx={{ mt: "2rem", width: "100%" }} maxWidth="xs">

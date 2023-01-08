@@ -10,16 +10,18 @@ class Persons implements IPersonsClass {
         makeAutoObservable(this)
     }
 
-    init() {
-        if (this.data.length === 0) {
+    init() {        
             ApiPersons.get().then(persons => {
                 runInAction(() => {
+                    const personsArr = [] 
                     for (let key in persons) {
-                        this.data.push({...persons[key], id: key})                    
-                    }                    
+                        personsArr.push({...persons[key], id: key})                    
+                    }
+                    if (this.data.length === 0) {
+                        this.data = personsArr
+                    }      
                 })
-            })
-        }
+            })        
         
     }
 

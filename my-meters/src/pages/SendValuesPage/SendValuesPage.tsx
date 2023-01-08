@@ -16,27 +16,44 @@ function SendValuesPage() {
     const route = search.get('id')
 
     useEffect(() => {
-        if (route && !user.data.isAdmin) {
+        if (route && !user.data.isAuth && !user.data.isAdmin) {
             const [name, host, sec] = route.split('-')
             if (name && host && sec) {
                 user.login(`${name}@${host}.ru`, sec).then(result => {
                     if (result) {
                         persons.init()                                                                  
-                    } else {
+                    } else {                        
                         navigate('/login')
                     }
                 })
             }
         }
-        if (!route && !user.data.isAuth) navigate('/login')
+        if (!route && !user.data.isAuth) {
+            const refreshToken = localStorage.getItem('my_meter_refresh_token')            
+            if (refreshToken) {                              
+                user.loginWithToken(refreshToken).then(result => {
+                    if (result) {
+                        persons.init()                        
+                    } else {                    
+                        navigate('/login')        
+                    }
+                })
+            } else {                
+                navigate('/login')
+            }            
+        }
     // eslint-disable-next-line
     }, [])
 
     useEffect(() => {
-        if (route && !user.data.isAdmin) {
+        if (route && persons.data.length > 0 && !user.data.isAdmin) {            
             const person = persons.getByRoute(route)
-            if (person) user.set(person)                                   
-        } 
+            if (person) user.set(person)
+        }      
+        if (!route && persons.data.length > 0 && user.data.isAdmin && rooms.getRooms().length === 0) {                    
+            rooms.init()
+            navigate('/meters')            
+        }
     // eslint-disable-next-line
     }, [persons.data.length])
 

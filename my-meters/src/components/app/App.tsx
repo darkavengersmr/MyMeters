@@ -1,7 +1,6 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { lazy, Suspense, useEffect } from "react";
-import { useCookies } from "react-cookie";
 import { Routes, Route } from 'react-router-dom';
 import settings from "../../store/settings";
 import user from "../../store/user";
@@ -26,10 +25,10 @@ const RoomsPage = lazy(() => import("../../pages/RoomsPage"));
 const SettingsPage = lazy(() => import("../../pages/SettingsPage"));
 const HelpPage = lazy(() => import("../../pages/HelpPage"));
 
-const App = observer(() => {
-  const [cookies] = useCookies(['mymeters_theme'])
+const App = observer(() => {  
+  const localStorageTheme = localStorage.getItem('mymeters_theme');
 
-  useEffect(() => settings.setTheme(cookies.mymeters_theme ? cookies.mymeters_theme : 'dark'), [cookies.mymeters_theme])
+  useEffect(() => settings.setTheme(localStorageTheme === 'light' ? localStorageTheme : 'dark'), [localStorageTheme])
 
   return (    
     <ThemeProvider theme={settings.getTheme()}>

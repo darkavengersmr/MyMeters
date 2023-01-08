@@ -23,6 +23,7 @@ export interface IPerson {
 export interface IUserClass {
     data: IUser 
     login: (email: string, password: string) => Promise<boolean>
+    loginWithToken: (refreshToken: string) => Promise<boolean>
     set: (user: IUser) => void
 }
 
@@ -85,6 +86,17 @@ export interface LoginResponseType {
     error?: any
   }
 
+export interface RefreshTokenResponseType {
+    expires_in: string
+    token_type: string
+    refresh_token:	string
+    id_token: string
+    user_id: string
+    project_id: string
+    error?: any
+}
+
+
 export interface ResponseDataType {
     name?: string
     error?: string
@@ -92,6 +104,7 @@ export interface ResponseDataType {
 
 export abstract class IApiUsersClass {
     static login: (email: string, password: string) => Promise<LoginResponseType | boolean>
+    static refreshTokenToTokenId: (refreshToken: string) => Promise<RefreshTokenResponseType | boolean>
 }
 
 export abstract class IApiPersonsClass {
