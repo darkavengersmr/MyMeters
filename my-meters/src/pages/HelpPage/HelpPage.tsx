@@ -70,7 +70,13 @@ const HelpPage = () => {
                     "Жильцы". В открывшемся разделе можно добавить или удалить 
                     соответствующие сущности из справочников
                     </Typography>
+
+                    <Typography variant="body2" component="div" sx={{ mt: "1rem" }}>
+                    Версия приложения: {process.env.REACT_APP_VERSION}
+                    </Typography>
                     </>
+
+                    
                 }
             </Container>
         </Layout>

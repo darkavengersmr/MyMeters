@@ -8,7 +8,6 @@ import persons from "../../store/persons";
 import rooms from '../../store/rooms';
 import { useEffect } from "react";
 import { observer } from 'mobx-react-lite';
-import Spinner from '../../components/spinner';
 
 function SendValuesPage() {
     const [search] = useSearchParams();    
@@ -29,6 +28,7 @@ function SendValuesPage() {
                 })
             }
         }
+        if (!route && !user.data.isAuth) navigate('/login')
     // eslint-disable-next-line
     }, [])
 
@@ -45,8 +45,7 @@ function SendValuesPage() {
     // eslint-disable-next-line
     }, [user.data.roomId])
 
-    return <Layout>
-                {rooms.getRooms().length === 0 && <Spinner />}
+    return <Layout>                
                 {rooms.getRooms().length > 0 && <SendValues room={rooms.getRoomById(user.data.roomId!)} />}
          </Layout>
     

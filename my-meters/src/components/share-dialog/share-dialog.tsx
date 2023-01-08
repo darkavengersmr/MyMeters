@@ -20,7 +20,7 @@ const ShareDialog = ({ triggerToOpen,
                        dialogContentText                    
                     }: ConfirmDialogProps) => {
 
-    const url = `${getCurrentHost()}send?id=${dialogContentText}`
+    const url = `${getCurrentHost()}?id=${dialogContentText}`
 
     return (
     <Dialog open={triggerToOpen} 

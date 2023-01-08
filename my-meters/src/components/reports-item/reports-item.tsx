@@ -11,7 +11,7 @@ import {
     Legend,
   } from 'chart.js';
   import { Line } from 'react-chartjs-2';
-import { dateTransform, getColorByMeterTitle } from "../../helpers/helpers";
+import { ArrayAbsoluteToRelative, dateTransform, getColorByMeterTitle } from "../../helpers/helpers";
 
 import { IMeter } from "../../models/interfaces"
 
@@ -32,14 +32,14 @@ ChartJS.register(
 
 function ReportsItem({meter, limit}: ReportsItemProps) {    
 
-    const labels = meter.values.map(value => dateTransform(value.date).slice(0,5))
+    const labels = meter.values.map(value => dateTransform(value.date).slice(0,5).slice(-limit))
 
     const data = {
         labels,
         datasets: [
           {
             label: 'Dataset 1',
-            data: meter.values.map(value => value.value),
+            data: ArrayAbsoluteToRelative(meter.values.map(value => value.value).slice(-limit)),
             borderColor: getColorByMeterTitle(meter.title),
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
           },

@@ -1,69 +1,81 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { Routes, Route } from 'react-router-dom';
-import HelpPage from "../../pages/HelpPage";
-
-import HistoryValuesPage from "../../pages/HistoryValuesPage/HistoryValuesPage";
-import LoginPage from "../../pages/LoginPage/LoginPage";
-import MetersPage from "../../pages/MetersPage";
-import PersonsPage from "../../pages/PersonsPage";
-import ReportsPage from "../../pages/ReportsPasge/ReportsPage";
-import RoomsPage from "../../pages/RoomsPage";
-import SendValuesPage from "../../pages/SendValuesPage";
-import SettingsPage from "../../pages/SettingsPage/SettingsPage";
 import settings from "../../store/settings";
 import user from "../../store/user";
+
+import SendValuesPage from "../../pages/SendValuesPage";
+import Spinner from "../spinner";
+//import HistoryValuesPage from "../../pages/HistoryValuesPage/HistoryValuesPage";
+//import LoginPage from "../../pages/LoginPage/LoginPage";
+//import MetersPage from "../../pages/MetersPage";
+//import PersonsPage from "../../pages/PersonsPage";
+//import ReportsPage from "../../pages/ReportsPasge/ReportsPage";
+//import RoomsPage from "../../pages/RoomsPage";
+//import SettingsPage from "../../pages/SettingsPage/SettingsPage";
+//import HelpPage from "../../pages/HelpPage";
+
+const HistoryValuesPage = lazy(() => import("../../pages/HistoryValuesPage"));
+const LoginPage = lazy(() => import("../../pages/LoginPage/LoginPage"));
+const MetersPage = lazy(() => import("../../pages/MetersPage"));
+const PersonsPage = lazy(() => import("../../pages/PersonsPage"));
+const ReportsPage = lazy(() => import("../../pages/ReportsPasge"));
+const RoomsPage = lazy(() => import("../../pages/RoomsPage"));
+const SettingsPage = lazy(() => import("../../pages/SettingsPage"));
+const HelpPage = lazy(() => import("../../pages/HelpPage"));
 
 const App = observer(() => {
   const [cookies] = useCookies(['mymeters_theme'])
 
-  useEffect(() => settings.setTheme(cookies.mymeters_theme ? cookies.mymeters_theme : 'dark'), [])
+  useEffect(() => settings.setTheme(cookies.mymeters_theme ? cookies.mymeters_theme : 'dark'), [cookies.mymeters_theme])
 
   return (    
     <ThemeProvider theme={settings.getTheme()}>
       <CssBaseline />      
-      <Routes>          
-          {
-            user.data.isAdmin &&
-            <>
+      <Suspense fallback={<Spinner/>}> 
+        <Routes>          
+            {
+              user.data.isAdmin &&
+              <>
+              <Route
+              path="/rooms"             
+              element={<RoomsPage />} />
             <Route
-            path="/rooms"             
-            element={<RoomsPage />} />
-          <Route
-            path="/meters"             
-            element={<MetersPage />} />
-          <Route
-            path="/persons"             
-            element={<PersonsPage />} />
-            </>
-          }
-          {
-            user.data.isAuth &&
-            <>
+              path="/meters"             
+              element={<MetersPage />} />
             <Route
-            path="/history"             
-            element={<HistoryValuesPage />} />      
+              path="/persons"             
+              element={<PersonsPage />} />
+              </>
+            }
+            {
+              user.data.isAuth &&
+              <>              
+              <Route
+              path="/history"             
+              element={<HistoryValuesPage />} />                                
+              <Route
+              path="/report"             
+              element={<ReportsPage />} />    
+              </>
+            }          
             <Route
-            path="/report"             
-            element={<ReportsPage />} />    
-            </>
-          }          
-          <Route
-          path="/send"             
-          element={<SendValuesPage />} />
-          <Route
-          path="/settings"             
-          element={<SettingsPage />} />
-          <Route
-          path="/help"             
-          element={<HelpPage />} />
-          <Route
-            path="/login"
-            element={<LoginPage />} />
-          <Route path="*" element={<LoginPage />} />
-      </Routes>
+            path="/"             
+            element={<SendValuesPage />} />
+            <Route
+            path="/settings"             
+            element={<SettingsPage />} />
+            <Route
+            path="/help"             
+            element={<HelpPage />} />
+            <Route
+              path="/login"
+              element={<LoginPage />} />
+             <Route path="*" element={<LoginPage />} />
+        </Routes>      
+        </Suspense>  
     </ThemeProvider>
   );
 })

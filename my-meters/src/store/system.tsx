@@ -6,6 +6,7 @@ type Notification = "success" | "error" | "warning" | "info"
 class System {
 
     notifications: JSX.Element | undefined = undefined
+    showSpinner: boolean = false
 
     constructor() {
         makeAutoObservable(this)
@@ -33,6 +34,10 @@ class System {
             })
             return send
         } else return this.notifications
+    }
+
+    setShowSpinner(show: boolean) {
+        this.showSpinner = show
     }
 
 }

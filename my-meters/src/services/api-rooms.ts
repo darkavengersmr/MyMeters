@@ -1,9 +1,11 @@
 import { IApiRoomsClass, IRoom, ResponseDataType } from "../models/interfaces";
 import user from "../store/user";
+import system from "../store/system";
 
 export default class ApiRooms implements IApiRoomsClass{    
 
-    static async get(id?: string): Promise<{[key: string]: IRoom}> {        
+    static async get(id?: string): Promise<{[key: string]: IRoom}> {                
+        system.setShowSpinner(true)
         let responseData: {[key: string]: IRoom} | IRoom
                     
         const params = new URLSearchParams(`auth=${user.data.token}`)
@@ -18,15 +20,18 @@ export default class ApiRooms implements IApiRoomsClass{
 
         if (id) {
             responseData = await response.json() as IRoom
+            system.setShowSpinner(false)
             return {[id]: responseData}
         } else {
             responseData = await response.json() as {[key: string]: IRoom}
+            system.setShowSpinner(false)
             return responseData
         }
         
     }
 
-    static async add(room: IRoom): Promise<string> {        
+    static async add(room: IRoom): Promise<string> { 
+        system.setShowSpinner(true)       
         let responseData: ResponseDataType
                     
         const params = new URLSearchParams(`auth=${user.data.token}`)
@@ -40,12 +45,14 @@ export default class ApiRooms implements IApiRoomsClass{
         body: JSON.stringify(room) 
         });
 
-        responseData = await response.json() as ResponseDataType        
+        responseData = await response.json() as ResponseDataType
+        system.setShowSpinner(false)        
         if (responseData.error) throw new Error('Room add error')
         else return responseData.name!
     }
 
     static async remove(room: IRoom): Promise<boolean> {                                
+        system.setShowSpinner(true)
         const params = new URLSearchParams(`auth=${user.data.token}`)
         const {id} = room
         try {
@@ -57,6 +64,7 @@ export default class ApiRooms implements IApiRoomsClass{
                 },           
                 body: JSON.stringify(false) 
                 });
+            system.setShowSpinner(false)
             if (response.status === 200) return true
             else return false
         }

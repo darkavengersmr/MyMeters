@@ -54,3 +54,17 @@ export function getColorByMeterTitle(meterTitle: string): string {
 
     return 'rgb(0, 255, 255)'                    
 }
+
+export function ArrayAbsoluteToRelative (arr: number[]): number[] {
+    let result: number[] = []
+    if (arr.length>1) {
+        result.push(arr[1]-arr[0])
+        for (let i=1; i<arr.length; i++) {
+            result.push(arr[i]-arr[i-1])
+        }
+    } else {
+        return [0]
+    }
+    
+    return result
+}

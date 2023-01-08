@@ -25,7 +25,7 @@ function MainMenu({openMainMenu, toggleMainMenu}: MainMenuProps) {
     onOpen={toggleMainMenu}
   >
     <List>                   
-        <ListItem onClick={() => navigate(`/send`)}>
+        <ListItem onClick={() => navigate(`/`)}>
           <ListItemButton>
             <ListItemIcon>
               <ListAltIcon />

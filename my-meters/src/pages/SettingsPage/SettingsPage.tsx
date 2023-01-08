@@ -23,7 +23,8 @@ const SettingsPage = () => {
             setCookie('mymeters_theme', 
                       'light', 
                       {maxAge: 60*60*24*365*5})
-        }        
+        }   
+    // eslint-disable-next-line     
     }, [settings.theme, setCookie])
 
     return <Layout>

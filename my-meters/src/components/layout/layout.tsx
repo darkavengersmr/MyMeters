@@ -4,6 +4,7 @@ import AppHeader from "../app-header"
 import MainMenu from "../main-menu"
 import system from '../../store/system'
 import { observer } from "mobx-react-lite"
+import Spinner from "../spinner"
 
 type LayoutProps = {
     children: ReactNode
@@ -20,7 +21,8 @@ function Layout({children}: LayoutProps) {
     return <>
         <AppHeader toggleMainMenu={toggleMainMenu} username={user.data.isAdmin ? 'Администратор' : user.data.username}/>
         <MainMenu openMainMenu={openMainMenu} toggleMainMenu={toggleMainMenu}/>
-        {children}
+        {system.showSpinner && <Spinner/>}
+        {!system.showSpinner && children}
         {system.getNotification()}
     </>
 }

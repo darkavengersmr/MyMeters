@@ -1,9 +1,11 @@
 import { IApiMetersClass, IMeter, IMeterValue, ResponseDataType } from "../models/interfaces";
+import system from "../store/system";
 import user from "../store/user";
 
 export default class ApiMeters implements IApiMetersClass{    
 
-    static async add(meter: IMeter, roomId: string): Promise<string> {        
+    static async add(meter: IMeter, roomId: string): Promise<string> {
+        system.setShowSpinner(true)        
         let responseData: ResponseDataType
                     
         const params = new URLSearchParams(`auth=${user.data.token}`)
@@ -17,12 +19,14 @@ export default class ApiMeters implements IApiMetersClass{
         body: JSON.stringify(meter) 
         });
 
-        responseData = await response.json() as ResponseDataType        
+        responseData = await response.json() as ResponseDataType
+        system.setShowSpinner(false)
         if (responseData.error) throw new Error('Meter add error')
         else return responseData.name!
     }
 
-    static async remove(meter: IMeter, roomId: string): Promise<boolean> {                                
+    static async remove(meter: IMeter, roomId: string): Promise<boolean> {
+        system.setShowSpinner(true)                                  
         const params = new URLSearchParams(`auth=${user.data.token}`)
         const {id} = meter
         try {
@@ -34,6 +38,7 @@ export default class ApiMeters implements IApiMetersClass{
                 },           
                 body: JSON.stringify(false) 
                 });
+            system.setShowSpinner(false)
             if (response.status === 200) return true
             else return false
         }
@@ -42,7 +47,8 @@ export default class ApiMeters implements IApiMetersClass{
         }                
     }
 
-    static async addValue(meterValue: IMeterValue, meterId: string, roomId: string): Promise<string> {        
+    static async addValue(meterValue: IMeterValue, meterId: string, roomId: string): Promise<string> { 
+        system.setShowSpinner(true)         
         let responseData: ResponseDataType
                     
         const params = new URLSearchParams(`auth=${user.data.token}`)
@@ -56,7 +62,8 @@ export default class ApiMeters implements IApiMetersClass{
         body: JSON.stringify(meterValue) 
         });
 
-        responseData = await response.json() as ResponseDataType        
+        responseData = await response.json() as ResponseDataType
+        system.setShowSpinner(false)        
         if (responseData.error) throw new Error('Meter Value add error')
         else return responseData.name!
     }

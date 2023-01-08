@@ -1,9 +1,10 @@
 import { IApiPersonsClass, IPerson, ResponseDataType } from "../models/interfaces";
+import system from "../store/system";
 import user from "../store/user";
 
 export default class ApiPersons implements IApiPersonsClass{    
     static async register(email: string, password: string): Promise<boolean> {
-        
+        system.setShowSpinner(true)
         try {
             await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_APIKEY}`, {
             method: 'POST', 
@@ -18,12 +19,15 @@ export default class ApiPersons implements IApiPersonsClass{
           });
         }
         catch {
+            system.setShowSpinner(false)
             return false
         }
+        system.setShowSpinner(false)
         return true        
     }
 
-    static async get(): Promise<{[key: string]: IPerson}> {        
+    static async get(): Promise<{[key: string]: IPerson}> { 
+        system.setShowSpinner(true)       
         let responseData: {[key: string]: IPerson}  
                     
         const params = new URLSearchParams(`auth=${user.data.token}`)
@@ -36,11 +40,13 @@ export default class ApiPersons implements IApiPersonsClass{
         },        
         });
 
-        responseData = await response.json() as {[key: string]: IPerson}     
+        responseData = await response.json() as {[key: string]: IPerson} 
+        system.setShowSpinner(false)    
         return responseData
     }
 
-    static async add(person: IPerson): Promise<string> {        
+    static async add(person: IPerson): Promise<string> {
+        system.setShowSpinner(true)        
         let responseData: ResponseDataType
                     
         const params = new URLSearchParams(`auth=${user.data.token}`)
@@ -54,12 +60,14 @@ export default class ApiPersons implements IApiPersonsClass{
         body: JSON.stringify(person) 
         });
 
-        responseData = await response.json() as ResponseDataType        
+        responseData = await response.json() as ResponseDataType 
+        system.setShowSpinner(false)       
         if (responseData.error) throw new Error('Person add error')
         else return responseData.name!
     }
 
-    static async remove(person: IPerson): Promise<boolean> {                                
+    static async remove(person: IPerson): Promise<boolean> { 
+        system.setShowSpinner(true)                               
         const params = new URLSearchParams(`auth=${user.data.token}`)
         const {id, ...rest} = person
         try {
@@ -71,6 +79,7 @@ export default class ApiPersons implements IApiPersonsClass{
                 },           
                 body: JSON.stringify({...rest, isActive: false}) 
                 });
+            system.setShowSpinner(false)
             if (response.status === 200) return true
             else return false
         }

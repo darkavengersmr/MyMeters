@@ -51,7 +51,7 @@ function Reports({room}: ReportsProps) {
 
     {
         room && room.meters && !user.data.isAdmin &&
-        room.meters.map(meter => <ReportsItem key={meter.id} meter={meter} limit={6} />)
+        room.meters.map(meter => <ReportsItem key={meter.id} meter={meter} limit={12} />)
     }
 
     </Grid>    
