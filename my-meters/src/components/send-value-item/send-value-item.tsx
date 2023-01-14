@@ -51,7 +51,7 @@ function SendValuesItem({meter, lastValue, sendValue}: SendValuesItemProps) {
                         <Grid container 
                         direction="column"                                 
                         >
-                            <Button variant='contained'                    
+                            <Button disabled={!(parseInt(meterValue.value) > 0)} variant='contained'                    
                                 onClick={()=> sendValue(meter, meterValue.value)} >
                                 Отправить
                             </Button>
