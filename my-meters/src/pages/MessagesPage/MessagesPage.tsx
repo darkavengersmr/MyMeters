@@ -27,7 +27,12 @@ function MessagesPage() {
             loadAllMessages()            
         }
     // eslint-disable-next-line
-    }, [user.data.id, messages.data])
+    }, [user.data.id])
+        
+    useEffect(() => {
+        setMessagesState(messages.data)
+    // eslint-disable-next-line
+    }, [messages.data])
 
     return <Layout>
         <MessagesList messages={messagesState} isAdmin={!!user.data.isAdmin} />
