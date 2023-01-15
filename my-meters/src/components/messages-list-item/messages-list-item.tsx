@@ -1,7 +1,7 @@
 import { Card } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { IMessage, IPerson } from "../../models/interfaces";
+import { IMessage } from "../../models/interfaces";
 import Grid from "@mui/material/Grid/Grid";
 import { dateTransform } from "../../helpers/helpers";
 import Button from "@mui/material/Button";

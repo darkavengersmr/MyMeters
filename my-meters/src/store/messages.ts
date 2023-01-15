@@ -2,8 +2,6 @@ import { makeAutoObservable, runInAction } from "mobx"
 import { dateNow } from "../helpers/helpers"
 import { IMessage, IMessagesClass } from "../models/interfaces"
 import ApiMessages from "../services/api-messages"
-import system from "./system"
-
 
 class Messages implements IMessagesClass {
     data: IMessage[] = []

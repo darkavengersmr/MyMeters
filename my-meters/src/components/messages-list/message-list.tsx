@@ -1,10 +1,7 @@
-import { useState} from 'react'
 import { Container} from "@mui/material";
-import { IMessage, IPerson } from "../../models/interfaces";
+import { IMessage } from "../../models/interfaces";
 import { observer } from "mobx-react-lite";
 import MessagesListItem from "../messages-list-item";
-import AddMessageDialog from "../add-dialog/add-message-dialog";
-
 
 type MessagesListProps = {
     messages: IMessage[]

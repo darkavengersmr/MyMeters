@@ -26,6 +26,7 @@ function MessagesPage() {
         if (user.data.id && user.data.isAdmin) {
             loadAllMessages()            
         }
+    // eslint-disable-next-line
     }, [user.data.id, messages.data])
 
     return <Layout>

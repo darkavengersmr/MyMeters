@@ -9,7 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 import system from '../../store/system'
 import { useInput } from '../../hooks';
-import { IMessage, IPerson } from '../../models/interfaces';
+import { IMessage } from '../../models/interfaces';
 
 type AddDialogProps = {
     triggerToOpen: boolean
