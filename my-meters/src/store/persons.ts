@@ -30,6 +30,11 @@ class Persons implements IPersonsClass {
         
     }
 
+    getById(id: string): IPerson | undefined {                
+        return this.data.find(person => person.id === id && person.isActive)
+        
+    }
+
     getByRoute(route: string): IPerson | undefined {                      
         return this.data.find(person => person.route === route && person.isActive)        
     }

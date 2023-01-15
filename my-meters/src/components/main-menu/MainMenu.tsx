@@ -7,6 +7,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import SettingsIcon from '@mui/icons-material/Settings';
 import TimelineIcon from '@mui/icons-material/Timeline';
+import ForumIcon from '@mui/icons-material/Forum';
 import user from "../../store/user";
 
 type MainMenuProps = {
@@ -31,6 +32,14 @@ function MainMenu({openMainMenu, toggleMainMenu}: MainMenuProps) {
               <ListAltIcon />
             </ListItemIcon>
             <ListItemText primary="Подать показания" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem onClick={() => navigate(`/messages`)}>
+          <ListItemButton>
+            <ListItemIcon>
+              <ForumIcon />
+            </ListItemIcon>
+            <ListItemText primary="Сообщения" />
           </ListItemButton>
         </ListItem>
     </List>        

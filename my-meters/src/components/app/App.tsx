@@ -7,14 +7,6 @@ import user from "../../store/user";
 
 import SendValuesPage from "../../pages/SendValuesPage";
 import Spinner from "../spinner";
-//import HistoryValuesPage from "../../pages/HistoryValuesPage/HistoryValuesPage";
-//import LoginPage from "../../pages/LoginPage/LoginPage";
-//import MetersPage from "../../pages/MetersPage";
-//import PersonsPage from "../../pages/PersonsPage";
-//import ReportsPage from "../../pages/ReportsPasge/ReportsPage";
-//import RoomsPage from "../../pages/RoomsPage";
-//import SettingsPage from "../../pages/SettingsPage/SettingsPage";
-//import HelpPage from "../../pages/HelpPage";
 
 const HistoryValuesPage = lazy(() => import("../../pages/HistoryValuesPage"));
 const LoginPage = lazy(() => import("../../pages/LoginPage/LoginPage"));
@@ -24,6 +16,7 @@ const ReportsPage = lazy(() => import("../../pages/ReportsPasge"));
 const RoomsPage = lazy(() => import("../../pages/RoomsPage"));
 const SettingsPage = lazy(() => import("../../pages/SettingsPage"));
 const HelpPage = lazy(() => import("../../pages/HelpPage"));
+const MessagesPage = lazy(() => import("../../pages/MessagesPage"));
 
 const App = observer(() => {  
   const localStorageTheme = localStorage.getItem('mymeters_theme');
@@ -57,7 +50,10 @@ const App = observer(() => {
               element={<HistoryValuesPage />} />                                
               <Route
               path="/report"             
-              element={<ReportsPage />} />    
+              element={<ReportsPage />} />                  
+              <Route
+              path="/messages"             
+              element={<MessagesPage />} />    
               </>
             }          
             <Route

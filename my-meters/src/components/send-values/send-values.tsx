@@ -8,6 +8,8 @@ import rooms from "../../store/rooms"
 import user from "../../store/user"
 import SendValuesItem from "../send-value-item/send-value-item"
 import { useState } from "react";
+import SendMessage from "../send-message";
+import messages from "../../store/messages";
 
 type SendValuesProps = {
     room: IRoom | undefined
@@ -57,10 +59,16 @@ function SendValues({room}: SendValuesProps) {
     {
         room && !user.data.isAdmin &&
         room.meters.map(meter => <SendValuesItem key={meter.id} 
-                                                       meter={meter} 
-                                                       lastValue={rooms.getMetersLastValue(meter.id!, room.id!)} 
-                                                       sendValue={(meter, value) => rooms.setMeterValue({userId: user.data.id!, date: dateNow(), value: parseInt(value)}, meter.id!, room.id!)}
+                                                      meter={meter} 
+                                                      lastValue={rooms.getMetersLastValue(meter.id!, room.id!)} 
+                                                      sendValue={(meter, value) => rooms.setMeterValue({userId: user.data.id!, date: dateNow(), value: parseInt(value)}, meter.id!, room.id!)}
                                    />)
+    }
+
+    {
+        !user.data.isAdmin &&
+        <SendMessage sendToday={messages.sendToday()}
+                     addMessage={message => messages.addMessage({userId: user.data.id!, date: dateNow(), message, isActive: true, username: user.data.username}, user.data.id!)} />
     }
 
     </Grid>    

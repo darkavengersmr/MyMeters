@@ -30,6 +30,7 @@ export interface IUserClass {
 export interface IPersonsClass {
     data: IPerson[]
     init: () => void
+    getById: (id: string) => IPerson | undefined 
     getByRoomId: (roomId: string) => IPerson[]
     getByRoute: (route: string) => IPerson | undefined
     add: (person: IPerson) => Promise<boolean>
@@ -115,7 +116,7 @@ export abstract class IApiPersonsClass {
 }
 
 export abstract class IApiRoomsClass {    
-    static get: () => Promise<Promise<{[key: string]: IRoom}>>
+    static get: () => Promise<{[key: string]: IRoom}>
     static add: (room: IRoom) => Promise<string>
     static remove: (room: IRoom) => Promise<boolean>
 }
@@ -124,4 +125,32 @@ export abstract class IApiMetersClass {
     static add: (meter: IMeter, roomId: string) => Promise<string>
     static remove: (meter: IMeter, roomId: string) => Promise<boolean>
     static addValue: (meterValue: IMeter, meterId: string, roomId: string) => Promise<string>
+}
+
+export interface IMessage {
+    id?: string
+    date: string
+    message: string
+    userId: string
+    username: string
+    isActive: boolean
+    reply?: string
+}
+
+export abstract class IApiMessagesClass {    
+    static get: (userId: string, id?: string) => Promise<{[key: string]: IMessage}>
+    static getAll: () => Promise<{[key: string]: {[key: string]: IMessage}}>
+    static add: (message: IMessage, userId?: string) => Promise<string>
+    static remove: (message: IMessage, userId?: string) => Promise<boolean>
+}
+
+export interface IMessagesClass {
+    data: IMessage[]    
+    //init: (userId: string) => void
+    getMessages: (userId: string) => Promise<IMessage[]>
+    getAllMessages: () => Promise<IMessage[]>
+    //getMessageById: (id: string) => IMessage | undefined
+    sendToday: () => boolean
+    addMessage: (message: IMessage, userId: string) => Promise<boolean>
+    removeMessage: (id: string, userId: string) => Promise<boolean>    
 }
