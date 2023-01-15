@@ -12,22 +12,6 @@ class Messages implements IMessagesClass {
         makeAutoObservable(this)
     }
 
-    /*
-    init() {        
-        ApiMessages.getAll().then(messages => {
-            runInAction(() => {
-                const messagesArr = [] 
-                for (let key in messages) {
-                    messagesArr.push({...messages[key], id: key})                    
-                }
-                if (this.data.length === 0) {
-                    this.data = messagesArr
-                }      
-            })
-        })        
-    }
-    */
-
     async getMessages(userId: string): Promise<IMessage[]> {        
         if (this.data.length === 0) {
             const messagesArr: IMessage[] = [] 
@@ -62,13 +46,6 @@ class Messages implements IMessagesClass {
         } else return this.data        
     }
 
-    /*
-    getMessageById(id: string): IMessage | undefined {        
-        return this.data.find(message => message.id === id && message.isActive)
-        
-    } 
-    */
-
     sendToday(): boolean {        
         if (this.data.find(message => message.date === dateNow())) return true
         else return false
@@ -100,6 +77,19 @@ class Messages implements IMessagesClass {
         catch {            
             return false
         }        
+        return true
+    }
+
+    async replyToMessage(message: IMessage): Promise<boolean> {             
+        try {
+            await ApiMessages.update(message)
+        }
+        catch {                
+            return false                
+        }                     
+        runInAction(() => {                
+            this.data = this.data.map(mes => mes.id === message.id ? message : mes)            
+        })
         return true
     }
 

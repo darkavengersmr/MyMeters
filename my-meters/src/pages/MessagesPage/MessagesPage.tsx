@@ -26,7 +26,7 @@ function MessagesPage() {
         if (user.data.id && user.data.isAdmin) {
             loadAllMessages()            
         }
-    }, [user.data.id])
+    }, [user.data.id, messages.data])
 
     return <Layout>
         <MessagesList messages={messagesState} isAdmin={!!user.data.isAdmin} />

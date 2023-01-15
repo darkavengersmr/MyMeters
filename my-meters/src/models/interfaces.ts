@@ -142,6 +142,7 @@ export abstract class IApiMessagesClass {
     static getAll: () => Promise<{[key: string]: {[key: string]: IMessage}}>
     static add: (message: IMessage, userId?: string) => Promise<string>
     static remove: (message: IMessage, userId?: string) => Promise<boolean>
+    static update: (message: IMessage) => Promise<string>
 }
 
 export interface IMessagesClass {
@@ -152,5 +153,6 @@ export interface IMessagesClass {
     //getMessageById: (id: string) => IMessage | undefined
     sendToday: () => boolean
     addMessage: (message: IMessage, userId: string) => Promise<boolean>
-    removeMessage: (id: string, userId: string) => Promise<boolean>    
+    removeMessage: (id: string, userId: string) => Promise<boolean>
+    replyToMessage: (message: IMessage) => Promise<boolean>    
 }

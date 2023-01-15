@@ -50,7 +50,7 @@ export default class ApiMessages implements IApiMessagesClass {
         
     }
 
-    static async add(Message: IMessage, userId: string): Promise<string> { 
+    static async add(message: IMessage, userId: string): Promise<string> { 
         system.setShowSpinner(true)       
         let responseData: ResponseDataType
                     
@@ -62,7 +62,7 @@ export default class ApiMessages implements IApiMessagesClass {
             'Content-Type': 'application/json',
             
         },           
-        body: JSON.stringify(Message) 
+        body: JSON.stringify(message) 
         });
 
         responseData = await response.json() as ResponseDataType
@@ -71,10 +71,10 @@ export default class ApiMessages implements IApiMessagesClass {
         else return responseData.name!
     }
 
-    static async remove(Message: IMessage, userId: string): Promise<boolean> {                                
+    static async remove(message: IMessage, userId: string): Promise<boolean> {                                
         system.setShowSpinner(true)
         const params = new URLSearchParams(`auth=${user.data.token}`)
-        const {id} = Message
+        const {id} = message
         try {
             const response = await fetch(`${process.env.REACT_APP_DATABASEURL}/messages/${userId}/${id}/isActive.json?` + params, {
                 method: 'PUT', 
@@ -91,6 +91,28 @@ export default class ApiMessages implements IApiMessagesClass {
         catch {
             return false
         }                
+    }
+
+    static async update(message: IMessage): Promise<string> { 
+        system.setShowSpinner(true)       
+        let responseData: ResponseDataType
+        const {id, userId} = message
+                    
+        const params = new URLSearchParams(`auth=${user.data.token}`)
+
+        const response = await fetch(`${process.env.REACT_APP_DATABASEURL}/messages/${userId}/${id}.json?` + params, {
+        method: 'PUT', 
+        headers: {
+            'Content-Type': 'application/json',
+            
+        },           
+        body: JSON.stringify(message) 
+        });
+
+        responseData = await response.json() as ResponseDataType
+        system.setShowSpinner(false)        
+        if (responseData.error) throw new Error('Message update error')
+        else return responseData.name!
     }
 }
 

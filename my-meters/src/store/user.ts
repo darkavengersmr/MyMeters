@@ -53,7 +53,7 @@ class User implements IUserClass {
         this.data.username = user.username
         this.data.dateIn = user.dateIn
         this.data.roomId = user.roomId
-        this.data.id = user.id
+        this.data.id = user.id        
     }
 }
 

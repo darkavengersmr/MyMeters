@@ -1,7 +1,10 @@
-import { Container, Paper, Table, TableBody, TableContainer } from "@mui/material";
+import { useState} from 'react'
+import { Container} from "@mui/material";
 import { IMessage, IPerson } from "../../models/interfaces";
 import { observer } from "mobx-react-lite";
 import MessagesListItem from "../messages-list-item";
+import AddMessageDialog from "../add-dialog/add-message-dialog";
+
 
 type MessagesListProps = {
     messages: IMessage[]
@@ -9,7 +12,8 @@ type MessagesListProps = {
 }
 
 function MessagesList({messages, isAdmin}: MessagesListProps) {
-    return <Container sx={{ mt: "2rem", width: "100%" }} maxWidth="sm">
+    return <>
+    <Container sx={{ mt: "2rem", width: "100%" }} maxWidth="sm">
     
             {                
                 messages.map((message) => {
@@ -23,8 +27,9 @@ function MessagesList({messages, isAdmin}: MessagesListProps) {
                 })
             }            
 
-    </Container>     
-    
+    </Container>
+
+    </>
 }
 
 export default observer(MessagesList)
