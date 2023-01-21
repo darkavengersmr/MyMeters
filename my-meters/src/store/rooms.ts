@@ -55,6 +55,7 @@ class Rooms implements IRoomsClass {
         let id: string
         try {
             id = await ApiRooms.add(room)
+            if (!id) return false
         }
         catch {                
             return false                
@@ -88,6 +89,7 @@ class Rooms implements IRoomsClass {
         let id: string
         try {
             id = await ApiMeters.add(meter, roomId)
+            if (!id) return false
             await this.setMeterValue(
                 {
                     date: dateNow(),
@@ -137,8 +139,8 @@ class Rooms implements IRoomsClass {
     }
 
     async setMeterValue(meterValue: IMeterValue, meterId: string, roomId: string): Promise<boolean> {
-        try {
-            await ApiMeters.addValue(meterValue, meterId, roomId)
+        try {            
+            if (!await ApiMeters.addValue(meterValue, meterId, roomId)) return false
             runInAction(() => {
                 let room = this.data.find(room => room.id === roomId)
                 if (room) {
