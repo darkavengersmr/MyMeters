@@ -5,8 +5,8 @@ export function dateNow() {
         String(date.getDate()).padStart(2, '0');
 }
 
-export function dateTransform(date: string) {    
-    return `${date.slice(8,10)}.${date.slice(5,7)}.${date.slice(0,4)}`
+export function dateTransform(date: string, year: 2 | 4 = 4) {    
+    return `${date.slice(8,10)}.${date.slice(5,7)}.${date.slice(4-year,4)}`
 }
 
 export function generateUUID() { 

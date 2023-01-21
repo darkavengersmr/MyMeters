@@ -19,6 +19,7 @@ export default class ApiPersons implements IApiPersonsClass{
           });
         }
         catch {
+            system.sendNotification('Сетевая ошибка, попробуйте позднее', 'error')
             system.setShowSpinner(false)
             return false
         }
@@ -47,23 +48,29 @@ export default class ApiPersons implements IApiPersonsClass{
 
     static async add(person: IPerson): Promise<string> {
         system.setShowSpinner(true)        
-        let responseData: ResponseDataType
-                    
-        const params = new URLSearchParams(`auth=${user.data.token}`)
+        let responseData: ResponseDataType = {}
+        
+        try {
+            const params = new URLSearchParams(`auth=${user.data.token}`)
 
-        const response = await fetch(`${process.env.REACT_APP_DATABASEURL}/persons.json?` + params, {
-        method: 'POST', 
-        headers: {
-            'Content-Type': 'application/json',
-            
-        },           
-        body: JSON.stringify(person) 
-        });
+            const response = await fetch(`${process.env.REACT_APP_DATABASEURL}/persons.json?` + params, {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json',
+                
+            },           
+            body: JSON.stringify(person) 
+            });
 
-        responseData = await response.json() as ResponseDataType 
-        system.setShowSpinner(false)       
-        if (responseData.error) throw new Error('Person add error')
-        else return responseData.name!
+            responseData = await response.json() as ResponseDataType
+            system.setShowSpinner(false)
+            return responseData.name! 
+        }
+        catch {
+            system.setShowSpinner(false)
+            system.sendNotification('Сетевая ошибка, попробуйте позднее', 'error')       
+            return ''      
+        }        
     }
 
     static async remove(person: IPerson): Promise<boolean> { 
@@ -84,6 +91,8 @@ export default class ApiPersons implements IApiPersonsClass{
             else return false
         }
         catch {
+            system.setShowSpinner(false)
+            system.sendNotification('Сетевая ошибка, попробуйте позднее', 'error')
             return false
         }                
     }

@@ -20,6 +20,7 @@ export default class ApiUsers implements IApiUsersClass {
             responseData = await response.json() as LoginResponseType            
         }
         catch {
+            system.sendNotification('Сетевая ошибка, попробуйте позднее', 'error')
             system.setShowSpinner(false)            
             return false
         }
@@ -45,6 +46,7 @@ export default class ApiUsers implements IApiUsersClass {
             responseData = await response.json() as RefreshTokenResponseType          
         }
         catch {
+            system.sendNotification('Сетевая ошибка, попробуйте позднее', 'error')
             system.setShowSpinner(false)            
             return false
         }

@@ -53,6 +53,7 @@ class Messages implements IMessagesClass {
         let id: string
         try {
             id = await ApiMessages.add(message, userId)
+            if (!id) return false
         }
         catch {                
             return false                
@@ -80,7 +81,7 @@ class Messages implements IMessagesClass {
 
     async replyToMessage(message: IMessage): Promise<boolean> {             
         try {
-            await ApiMessages.update(message)
+            if (!await ApiMessages.update(message)) return false
         }
         catch {                
             return false                

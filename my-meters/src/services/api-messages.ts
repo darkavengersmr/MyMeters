@@ -10,24 +10,29 @@ export default class ApiMessages implements IApiMessagesClass {
                     
         const params = new URLSearchParams(`auth=${user.data.token}`)
 
-        const response = await fetch(`${process.env.REACT_APP_DATABASEURL}/messages/${userId}/${id ? '/'+id : ''}.json?` + params, {
-        method: 'GET', 
-        headers: {
-            'Content-Type': 'application/json',
+        try {
+            const response = await fetch(`${process.env.REACT_APP_DATABASEURL}/messages/${userId}/${id ? '/'+id : ''}.json?` + params, {
+                method: 'GET', 
+                headers: {
+                    'Content-Type': 'application/json',
+                    
+                },        
+                });
             
-        },        
-        });
-
-        if (id) {
-            responseData = await response.json() as IMessage
             system.setShowSpinner(false) 
-            return {[id]: responseData}
-        } else {
-            responseData = await response.json() as {[key: string]: IMessage}
-            system.setShowSpinner(false) 
-            return responseData
+            if (id) {
+                responseData = await response.json() as IMessage            
+                return {[id]: responseData}
+            } else {
+                responseData = await response.json() as {[key: string]: IMessage}                
+                return responseData
+            }
         }
-        
+        catch {
+            system.setShowSpinner(false) 
+            system.sendNotification('Сетевая ошибка, попробуйте позднее', 'error')
+            return {}
+        }        
     }
 
     static async getAll(): Promise<{[key: string]: {[key: string]: IMessage}}> {
@@ -36,18 +41,24 @@ export default class ApiMessages implements IApiMessagesClass {
                     
         const params = new URLSearchParams(`auth=${user.data.token}`)
 
-        const response = await fetch(`${process.env.REACT_APP_DATABASEURL}/messages.json?` + params, {
-        method: 'GET', 
-        headers: {
-            'Content-Type': 'application/json',
-            
-        },        
-        });
-        
-        responseData = await response.json() as {[key: string]: {[key: string]: IMessage}}
-        system.setShowSpinner(false)         
-        return responseData
-        
+        try {
+            const response = await fetch(`${process.env.REACT_APP_DATABASEURL}/messages.json?` + params, {
+                method: 'GET', 
+                headers: {
+                    'Content-Type': 'application/json',
+                    
+                },        
+                });
+                
+            responseData = await response.json() as {[key: string]: {[key: string]: IMessage}}
+            system.setShowSpinner(false)         
+            return responseData
+        }
+        catch {
+            system.setShowSpinner(false)         
+            system.sendNotification('Сетевая ошибка, попробуйте позднее', 'error')
+            return {}
+        }        
     }
 
     static async add(message: IMessage, userId: string): Promise<string> { 
@@ -56,19 +67,25 @@ export default class ApiMessages implements IApiMessagesClass {
                     
         const params = new URLSearchParams(`auth=${user.data.token}`)
 
-        const response = await fetch(`${process.env.REACT_APP_DATABASEURL}/messages/${userId}.json?` + params, {
-        method: 'POST', 
-        headers: {
-            'Content-Type': 'application/json',
-            
-        },           
-        body: JSON.stringify(message) 
-        });
-
-        responseData = await response.json() as ResponseDataType
-        system.setShowSpinner(false)        
-        if (responseData.error) throw new Error('Message add error')
-        else return responseData.name!
+        try {
+            const response = await fetch(`${process.env.REACT_APP_DATABASEURL}/messages/${userId}.json?` + params, {
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json',
+                    
+                },           
+                body: JSON.stringify(message) 
+                });
+        
+            responseData = await response.json() as ResponseDataType
+            system.setShowSpinner(false)                        
+            return responseData.name!
+        }
+        catch {
+            system.setShowSpinner(false)         
+            system.sendNotification('Сетевая ошибка, попробуйте позднее', 'error')
+            return ''
+        }
     }
 
     static async remove(message: IMessage, userId: string): Promise<boolean> {                                
@@ -89,6 +106,8 @@ export default class ApiMessages implements IApiMessagesClass {
             else return false
         }
         catch {
+            system.setShowSpinner(false)         
+            system.sendNotification('Сетевая ошибка, попробуйте позднее', 'error')
             return false
         }                
     }
@@ -100,19 +119,25 @@ export default class ApiMessages implements IApiMessagesClass {
                     
         const params = new URLSearchParams(`auth=${user.data.token}`)
 
-        const response = await fetch(`${process.env.REACT_APP_DATABASEURL}/messages/${userId}/${id}.json?` + params, {
-        method: 'PUT', 
-        headers: {
-            'Content-Type': 'application/json',
-            
-        },           
-        body: JSON.stringify(message) 
-        });
-
-        responseData = await response.json() as ResponseDataType
-        system.setShowSpinner(false)        
-        if (responseData.error) throw new Error('Message update error')
-        else return responseData.name!
+        try {
+            const response = await fetch(`${process.env.REACT_APP_DATABASEURL}/messages/${userId}/${id}.json?` + params, {
+                method: 'PUT', 
+                headers: {
+                    'Content-Type': 'application/json',
+                    
+                },           
+                body: JSON.stringify(message) 
+                });
+        
+            responseData = await response.json() as ResponseDataType
+            system.setShowSpinner(false)                    
+            return responseData.name!
+        }
+        catch {
+            system.setShowSpinner(false)         
+            system.sendNotification('Сетевая ошибка, попробуйте позднее', 'error')
+            return ''
+        }        
     }
 }
 

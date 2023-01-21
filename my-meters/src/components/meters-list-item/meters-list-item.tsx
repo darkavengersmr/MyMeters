@@ -12,10 +12,10 @@ type MetersListItemProps = {
 
 function MetersListItem({meter, roomId, lastValue, onRemove}: MetersListItemProps) {
     return <TableRow>            
-                <TableCell>{meter.title}</TableCell>
-                <TableCell align="right">{lastValue.date ? dateTransform(lastValue.date) : null}</TableCell>
-                <TableCell align="right">{lastValue.value}</TableCell>
-                <TableCell align="right">
+                <TableCell sx={{ p: 0.5, m: 0 }}>{meter.title}</TableCell>
+                <TableCell align="right" sx={{ p: 0.5, m: 0, minWidth: 70 }}>{lastValue.date ? dateTransform(lastValue.date, 2) : null}</TableCell>
+                <TableCell align="right" sx={{ p: 0.5, m: 0, minWidth: 60 }}>{lastValue.value}</TableCell>
+                <TableCell align="right" sx={{ p: 0.5, m: 0, width: 30 }}>
                     <IconButton aria-label="delete" onClick={() => onRemove(meter.id!, roomId)}>
                         <DeleteIcon />
                     </IconButton>

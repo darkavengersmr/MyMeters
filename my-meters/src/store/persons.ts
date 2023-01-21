@@ -47,6 +47,7 @@ class Persons implements IPersonsClass {
             let id: string
             try {
                 id = await ApiPersons.add({...person, route})
+                if (!id) return false
             }
             catch {                
                 return false                

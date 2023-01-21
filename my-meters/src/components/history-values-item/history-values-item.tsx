@@ -20,7 +20,7 @@ function HistoryValuesItem({meter, limit}: HistoryValuesItemProps) {
     return <>
             <Card variant="outlined" sx={{ mb: 2 }}>
                 <CardContent>
-                    <Typography sx={{ mt: 0, mb: 0}} variant="h6">
+                    <Typography sx={{ mt: 0, mb: 0}} variant="h6" textAlign='center'>
                     {meter.title}
                     </Typography>
 
@@ -38,7 +38,7 @@ function HistoryValuesItem({meter, limit}: HistoryValuesItemProps) {
                             key={`${meterValue.date} ${meterValue.value}`}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
-                            <TableCell component="th" scope="row">{dateTransform(meterValue.date)}</TableCell>
+                            <TableCell component="th" scope="row">{dateTransform(meterValue.date, 2)}</TableCell>
                             <TableCell align="right">{meterValue.value}</TableCell>                            
                             </TableRow>
                         ))}

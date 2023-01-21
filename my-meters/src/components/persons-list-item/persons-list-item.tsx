@@ -12,14 +12,14 @@ type MetersListItemProps = {
 
 function PersonsListItem({person, onShare, onRemove}: MetersListItemProps) {
     return <TableRow>            
-                <TableCell>{person.username}
+                <TableCell sx={{p: 0.5, m: 0, minWidth: 120}}>{person.username}
                     <IconButton aria-label="share" onClick={() => onShare(person.route)}>
                         <ShareIcon />
                     </IconButton>                
                 </TableCell>
-                <TableCell align="right">{person.dateIn ? dateTransform(person.dateIn) : null}</TableCell>
+                <TableCell align="right">{person.dateIn ? dateTransform(person.dateIn, 2) : null}</TableCell>
 
-                <TableCell align="right">
+                <TableCell align="right" sx={{p: 0.5, m: 0, width: 40}}>
                     <IconButton aria-label="delete" onClick={() => onRemove(person.id!)}>
                         <DeleteIcon />
                     </IconButton>
