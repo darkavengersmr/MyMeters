@@ -24,9 +24,12 @@ function SendValuesItem({meter, lastValue, sendValue}: SendValuesItemProps) {
                     {meter.title}
                     </Typography>
 
-                    <Typography sx={{ mt: 2, mb: 0}} variant="caption" color={lastValue.date && dateNow() === lastValue.date ? "greenyellow" : 'red'}>            
-                        Последнее показание: {lastValue.value} <br/>
-                        Дата: {lastValue.date? dateTransform(lastValue.date) : ""}                         
+                    <Typography sx={{ mt: 1, mb: 0}} variant="body2">            
+                        Последнее показание: <big>{lastValue.value}</big>
+                    </Typography>
+
+                    <Typography sx={{ mt: 0, mb: 0}} variant="body2" color={lastValue.date && dateNow() === lastValue.date ? "greenyellow" : 'red'}>                                    
+                        Дата: <big>{lastValue.date? dateTransform(lastValue.date) : ""}</big>                       
                     </Typography>
                     {
                         lastValue.date && dateNow() !== lastValue.date &&
