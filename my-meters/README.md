@@ -15,5 +15,6 @@ Frontend сервиса "Мои счетчики". Используется React/MobX/Material UI/Chart.js.
 - вход пользователей (жильцов) по секретной ссылке с фоновой авторизацией
 - PWA приложение
 
+![alt text](screenshots/screenshot0.gif "MyMeters")
 
 ![alt text](screenshots/screenshots.jpg "MyMeters")

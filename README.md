@@ -16,5 +16,6 @@ Frontend сервиса "Мои счетчики". Используется Reac
 - вход пользователей (жильцов) по секретной ссылке с фоновой авторизацией
 - PWA приложение
 
+![alt text](my-meters/screenshots/screenshot0.gif "MyMeters")
 
 ![alt text](my-meters/screenshots/screenshots.jpg "MyMeters")
